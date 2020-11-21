@@ -5,6 +5,7 @@ import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowEvent;
 
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -92,7 +93,8 @@ public class EditorWindow extends JFrame {
 		System.out.println("Save As... MenuItem selected");
 	}
 	
+	/** Closes this window via WindowEvent, as if the user clicked the "X" */
 	private void exit() {
-		System.out.println("Exit MenuItem selected");
+		this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
 	}
 }
