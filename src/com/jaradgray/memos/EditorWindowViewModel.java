@@ -25,15 +25,20 @@ public class EditorWindowViewModel {
 		if (newText.equals(mMemo.getText())) {
 			return;
 		}
-		mMemo.setText(newText);
 		if (mMemo.getFilePath() == null || mMemo.getFilePath().equals("")) {
 			saveChangesAs(newText);
 		}
+		
+		// Update mMemo
+		mMemo.setText(newText);
 		
 		// TODO save changes to existing file
 	}
 	
 	public void saveChangesAs(String newText) {
+		// Update mMemo
+		mMemo.setText(newText);
+		
 		// Show a "Save as" dialog, save file
 		// create and show a file chooser
 		final JFileChooser fc = new JFileChooser();
