@@ -118,6 +118,7 @@ public class EditorWindow extends JFrame {
 	
 	private void saveAs() {
 		System.out.println("Save As... MenuItem selected");
+		mViewModel.saveChangesAs(mTextArea.getText());
 	}
 	
 	/** Closes this window via WindowEvent, as if the user clicked the "X" */
