@@ -55,24 +55,31 @@ public class EditorWindowViewModel {
 			
 			// TODO prompt for confirmation if selected file exists
 			
-			// save file
-			PrintWriter outputStream = null;
-			try {
-				outputStream = new PrintWriter(file);
-				outputStream.println(newText);
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			} finally {
-				if (outputStream != null) {
-					outputStream.close();
-				}
-			}
+			// Save file
+			writeTextFile(file.getAbsolutePath(), newText);
 			
 			// Update mMemo
 			MemoFile memo = new MemoFile();
 			memo.setFilePath(file.getAbsolutePath());
 			memo.setText(newText);
 			mMemo.set(memo);
+		}
+	}
+	
+	
+	// Private methods
+	
+	private void writeTextFile(String path, String text) {
+		PrintWriter outputStream = null;
+		try {
+			outputStream = new PrintWriter(new File(path));
+			outputStream.println(text);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} finally {
+			if (outputStream != null) {
+				outputStream.close();
+			}
 		}
 	}
 }
