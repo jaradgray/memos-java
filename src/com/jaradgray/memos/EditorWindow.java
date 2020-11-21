@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -11,6 +12,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.KeyStroke;
 
 public class EditorWindow extends JFrame {
 	public EditorWindow(String title) {
@@ -32,9 +34,12 @@ public class EditorWindow extends JFrame {
 		
 		// build the "File" menu
 		fileMenu = new JMenu("File");
+		fileMenu.setMnemonic(KeyEvent.VK_F);
 		menuBar.add(fileMenu);
 		
 		menuItem = new JMenuItem("Save");
+		menuItem.setMnemonic(KeyEvent.VK_S);
+		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
 		menuItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -45,6 +50,8 @@ public class EditorWindow extends JFrame {
 		fileMenu.add(menuItem);
 		
 		menuItem = new JMenuItem("Save As...");
+		menuItem.setMnemonic(KeyEvent.VK_A);
+		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK | ActionEvent.SHIFT_MASK));
 		menuItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -75,7 +82,7 @@ public class EditorWindow extends JFrame {
 	}
 	
 	
-	// MenuItem action event handlers
+	// Private methods
 	
 	private void save() {
 		System.out.println("Save MenuItem selected");
