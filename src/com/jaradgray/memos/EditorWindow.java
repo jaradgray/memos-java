@@ -6,6 +6,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
+import java.util.Observable;
+import java.util.Observer;
 
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -85,6 +87,21 @@ public class EditorWindow extends JFrame {
 		
 		// Get a ViewModel
 		mViewModel = new EditorWindowViewModel(this);
+		
+		// Observe VM's data
+		mViewModel.getMemo().addObserver(new Observer() {
+			@Override
+			public void update(Observable arg0, Object arg1) {
+				MemoFile m = (MemoFile) arg1;
+				// Update view based on the given MemoFile
+				// window title
+				EditorWindow.this.setTitle(m.getFileName());
+				// text area
+				mTextArea.setText(m.getText());
+			}
+		});
+		
+		// TODO initialize component state from VM
 		
 		// Add Swing components to JFrame's content pane
 		Container c = getContentPane();
