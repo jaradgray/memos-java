@@ -69,6 +69,11 @@ public class EditorWindowViewModel {
 	
 	// Private methods
 	
+	/**
+	 * Writes @text to file at @path, creating the file if it doesn't exist.
+	 * @param path
+	 * @param text
+	 */
 	private void writeTextFile(String path, String text) {
 		PrintWriter outputStream = null;
 		try {
