@@ -59,7 +59,7 @@ public class EditorWindowViewModel {
 			
 			// TODO prompt for confirmation if selected file exists
 			
-			// Save file
+			// Write newText to selected file
 			writeTextFile(file.getAbsolutePath(), newText);
 			
 			// Update mMemo
