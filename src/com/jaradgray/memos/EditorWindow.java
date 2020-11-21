@@ -16,6 +16,12 @@ import javax.swing.JTextArea;
 import javax.swing.KeyStroke;
 
 public class EditorWindow extends JFrame {
+	// Instance variables
+	private JTextArea mTextArea;
+	private EditorWindowViewModel mViewModel;
+	
+	
+	// Constructor
 	public EditorWindow(String title) {
 		super(title);
 		
@@ -23,8 +29,8 @@ public class EditorWindow extends JFrame {
 		setLayout(new BorderLayout());
 		
 		// Create Swing components
-		JTextArea textArea = new JTextArea();
-		JScrollPane scrollPane = new JScrollPane(textArea, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		mTextArea = new JTextArea();
+		JScrollPane scrollPane = new JScrollPane(mTextArea, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		
 		// menu bar
 		JMenuBar menuBar;
@@ -77,6 +83,9 @@ public class EditorWindow extends JFrame {
 		// set JFrame's JMenuBar
 		setJMenuBar(menuBar);
 		
+		// Get a ViewModel
+		mViewModel = new EditorWindowViewModel(this);
+		
 		// Add Swing components to JFrame's content pane
 		Container c = getContentPane();
 		c.add(scrollPane, BorderLayout.CENTER);
@@ -86,7 +95,8 @@ public class EditorWindow extends JFrame {
 	// Private methods
 	
 	private void save() {
-		System.out.println("Save MenuItem selected");
+		System.out.println("Save MenuItem selected: " + mTextArea.getText());
+		mViewModel.saveChanges(mTextArea.getText());
 	}
 	
 	private void saveAs() {
