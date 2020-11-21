@@ -33,17 +33,21 @@ public class EditorWindowViewModel {
 		if (newText.equals(mMemo.get().getText())) {
 			return;
 		}
+		// If our memo doesn't have a file path, save as instead of save
 		if (mMemo.get().getFilePath() == null || mMemo.get().getFilePath().equals("")) {
 			saveChangesAs(newText);
 			return;
 		}
 		
+		// Write changes to file
+		String path = mMemo.get().getFilePath();
+		writeTextFile(path, newText);
+		
 		// Update mMemo
 		MemoFile memo = new MemoFile();
+		memo.setFilePath(path);
 		memo.setText(newText);
 		mMemo.set(memo);
-		
-		// TODO save changes to existing file
 	}
 	
 	public void saveChangesAs(String newText) {		
