@@ -10,15 +10,14 @@ import com.jaradgray.observable.MutableObservableObject;
 
 public class SettingsViewModel {
 	// Instance variables
-	private MutableObservableObject<WindowSettings> mWindowSettings;
+	private MutableObservableObject<WindowSettings> mWindowSettings = new MutableObservableObject<>();
 	
 	
 	// Constructor
 	public SettingsViewModel() {
 		// Get settings file data
 		String jsonString = getTextFromFile(getSettingsFile());
-		System.out.println("jsonString" + jsonString);
-		// Parse data into JSON object
+		mWindowSettings.set(new WindowSettings(jsonString));
 	}
 	
 	
