@@ -16,7 +16,6 @@ public class Application {
 		
 		// Create, initialize, and display the editor window
 		EditorWindow window = new EditorWindow("Hello Memos World!");
-		window.setSize(600, 400);
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.setVisible(true);
 	}

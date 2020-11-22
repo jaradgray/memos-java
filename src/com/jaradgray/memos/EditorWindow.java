@@ -5,6 +5,7 @@ import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.Observable;
 import java.util.Observer;
@@ -23,6 +24,7 @@ public class EditorWindow extends JFrame {
 	// Instance variables
 	private JTextArea mTextArea;
 	private EditorWindowViewModel mViewModel;
+	private SettingsViewModel mSettingsVM;
 	
 	
 	// Constructor
@@ -110,6 +112,7 @@ public class EditorWindow extends JFrame {
 		
 		// Get a ViewModel
 		mViewModel = new EditorWindowViewModel(this);
+		mSettingsVM = new SettingsViewModel();
 		
 		// Observe VM's data
 		// memo
@@ -143,10 +146,37 @@ public class EditorWindow extends JFrame {
 				}
 			}
 		});
+		// window settings
+		mSettingsVM.getWindowSettings().addObserver(new Observer() {
+			@Override
+			public void update(Observable arg0, Object o) {
+				WindowSettings settings = (WindowSettings) o;
+				// Set location and size based on settings
+				EditorWindow.this.setLocation(settings.getX(), settings.getY());
+				EditorWindow.this.setSize(settings.getWidth(), settings.getHeight());
+			}
+		});
 		
 		// Initialize component state from VM
 		EditorWindow.this.setTitle(mViewModel.getMemo().get().getFileName() + " - Memos");
 		mTextArea.setText(mViewModel.getMemo().get().getText());
+		// window
+		WindowSettings windowSettings = mSettingsVM.getWindowSettings().get();
+		EditorWindow.this.setLocation(windowSettings.getX(), windowSettings.getY());
+		EditorWindow.this.setSize(windowSettings.getWidth(), windowSettings.getHeight());
+		
+		// Listen for window events
+		this.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				// Give SettingsViewModel current window info
+				mSettingsVM.onWindowClosing(
+						EditorWindow.this.getX(),
+						EditorWindow.this.getY(),
+						EditorWindow.this.getWidth(),
+						EditorWindow.this.getHeight());
+			}
+		});
 		
 		// Add Swing components to JFrame's content pane
 		Container c = getContentPane();
