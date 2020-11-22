@@ -14,6 +14,7 @@ public class EditorWindowViewModel {
 	// Instance variables
 	private Component mComponent;
 	private MutableObservableObject<MemoFile> mMemo;
+	private MutableObservableObject<Boolean> mIsMemoTextSynced;
 	
 	
 	// Constructor
@@ -21,14 +22,23 @@ public class EditorWindowViewModel {
 		mComponent = component;
 		mMemo = new MutableObservableObject<>();
 		mMemo.set(new MemoFile("", ""));
+		
+		mIsMemoTextSynced = new MutableObservableObject<>();
+		mIsMemoTextSynced.set(true);
 	}
 	
 	
 	// Accessors
 	public ObservableObject<MemoFile> getMemo() { return mMemo; }
+	public ObservableObject<Boolean> getIsMemoTextSynced() { return mIsMemoTextSynced; }
 	
 	
 	// Public methods
+	public void onTextChanged(String newText) {
+		boolean isSynced = mMemo.get().getText().equals(newText);
+		mIsMemoTextSynced.set(isSynced);
+	}
+	
 	public void saveChanges(String newText) {
 		if (newText.equals(mMemo.get().getText())) {
 			return;

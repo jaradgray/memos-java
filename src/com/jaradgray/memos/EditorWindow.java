@@ -16,6 +16,8 @@ import javax.swing.JMenuItem;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.KeyStroke;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 public class EditorWindow extends JFrame {
 	// Instance variables
@@ -33,6 +35,27 @@ public class EditorWindow extends JFrame {
 		// Create Swing components
 		mTextArea = new JTextArea();
 		JScrollPane scrollPane = new JScrollPane(mTextArea, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		
+		mTextArea.getDocument().addDocumentListener(new DocumentListener() {
+
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+				// Not fired for plain-text documents
+			}
+
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				// Notify VM text has changed
+				mViewModel.onTextChanged(mTextArea.getText());
+			}
+
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				// Notify VM text has changed
+				mViewModel.onTextChanged(mTextArea.getText());
+			}
+			
+		});
 		
 		// menu bar
 		JMenuBar menuBar;
@@ -89,6 +112,7 @@ public class EditorWindow extends JFrame {
 		mViewModel = new EditorWindowViewModel(this);
 		
 		// Observe VM's data
+		// memo
 		mViewModel.getMemo().addObserver(new Observer() {
 			@Override
 			public void update(Observable arg0, Object arg1) {
@@ -98,6 +122,25 @@ public class EditorWindow extends JFrame {
 				EditorWindow.this.setTitle(m.getFileName() + " - Memos");
 				// text area
 				mTextArea.setText(m.getText());
+			}
+		});
+		// text changes
+		mViewModel.getIsMemoTextSynced().addObserver(new Observer() {
+			@Override
+			public void update(Observable o, Object arg) {
+				boolean isTextSynced = (boolean) arg;
+				String title = EditorWindow.this.getTitle();
+				if (isTextSynced) {
+					// Remove preceding "*" if it exists
+					if (title.startsWith("*")) {
+						EditorWindow.this.setTitle(title.substring(1));
+					}
+				} else {
+					// Add preceding "*" if it doesn't exist
+					if (!title.startsWith("*")) {
+						EditorWindow.this.setTitle("*" + title);
+					}
+				}
 			}
 		});
 		
