@@ -22,6 +22,16 @@ public class WindowSettings {
 	
 	// Constructor
 	/**
+	 * Create a WindowSettings object with default values.
+	 */
+	public WindowSettings() {
+		mWindowX = DEFAULT_WINDOW_X;
+		mWindowY = DEFAULT_WINDOW_Y;
+		mWindowWidth = DEFAULT_WINDOW_WIDTH;
+		mWindowHeight = DEFAULT_WINDOW_HEIGHT;
+	}
+	
+	/**
 	 * Construct a WindowSettings object from a JSON string.
 	 * @param json
 	 */

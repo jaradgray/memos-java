@@ -12,15 +12,21 @@ import com.jaradgray.observable.MutableObservableObject;
 import com.jaradgray.observable.ObservableObject;
 
 public class SettingsViewModel {
+	// Constants
+	public static final String SETTINGS_FILE_PATH = System.getenv("AppData") + File.separator + "Memos" + File.separator + "settings.json";
+	
 	// Instance variables
 	private MutableObservableObject<WindowSettings> mWindowSettings = new MutableObservableObject<>();
 	
-	
 	// Constructor
-	public SettingsViewModel() {
-		// Get settings file data
-		String jsonString = getTextFromFile(getSettingsFile());
-		mWindowSettings.set(new WindowSettings(jsonString));
+	public SettingsViewModel() {		
+		// Set mWindowSettings member based on settings file data, create settings file if it doesn't exist
+		File settingsFile = new File(SETTINGS_FILE_PATH);
+		if (!settingsFile.exists()) {
+			createDefaultSettingsFile();
+		}
+		String json = getTextFromFile(settingsFile);
+		mWindowSettings.set(new WindowSettings(json));
 	}
 	
 	
@@ -39,44 +45,6 @@ public class SettingsViewModel {
 	
 	
 	// Private methods
-	private String getAppDataPath() {
-		String result = "";
-		result = System.getProperty("user.home");
-		return result;
-	}
-	
-	private File getSettingsFile() {
-		// Build path string to our settings file
-		// create strings for individual path components
-		final String appDataPath = System.getenv("AppData");
-		final String directoryName = "Memos";
-		final String settingsFileName = "settings.json";
-		// build compound path strings
-		final String memosDirPath = appDataPath + File.separator + directoryName;
-		final String settingsFilePath = memosDirPath + File.separator + settingsFileName;
-		
-		// Create a directory for our app in AppData/Roaming if it doesn't exist
-		File memosDir = new File(memosDirPath);
-		memosDir.mkdirs();
-		
-		// Get settings file, creating it if it doesn't exist
-		File settingsFile = new File(settingsFilePath);
-		// TODO create fresh settings file if there's an error parsing its JSON data
-		if (!settingsFile.exists()) {
-			// TODO create and initialize new settings file
-			// create JSON data the settings file will contain
-			String jsonString = new JSONObject()
-					.put("window_x", 0)
-					.put("window_y", 0)
-					.put("window_width", 600)
-					.put("window_height", 400)
-					.toString();
-			System.out.println("jsonString: " + jsonString);
-			// TODO write jsonString to settings file
-		}
-		
-		return settingsFile;
-	}
 	
 	private String getTextFromFile(File file) {
 		String result = "";
@@ -89,13 +57,13 @@ public class SettingsViewModel {
 	}
 	
 	/**
-	 * Writes @data to app's local settings file.
-	 * @param data
+	 * Writes @json to app's local settings file.
+	 * @param json
 	 */
-	private void writeSettingsFile(String data) {
+	private void writeSettingsFile(String json) {
 		try {
 			// Note: Writes a String to a file creating the file and parent directories if they do not exist
-			FileUtils.writeStringToFile(getSettingsFile(), data, "utf-8");
+			FileUtils.writeStringToFile(new File(SETTINGS_FILE_PATH), json, "utf-8");
 		} catch(IOException e) {
 			e.printStackTrace();
 		}
@@ -107,8 +75,15 @@ public class SettingsViewModel {
 	 * @param obj
 	 */
 	private void updateSettingsFile(JSONObject obj) {
+		// Create settings file with default data if it doesn't exist
+		File settingsFile = new File(SETTINGS_FILE_PATH);
+		if (!settingsFile.exists()) {
+			createDefaultSettingsFile();
+		}
+		// TODO create settings file with default data if its data is corrupted
+		
 		// Get settings file data as a JSONObject
-		JSONObject settingsJsonObj = new JSONObject(getTextFromFile(getSettingsFile()));
+		JSONObject settingsJsonObj = new JSONObject(getTextFromFile(settingsFile));
 		// For each key in obj, overwrite settings object's corresponding value with given object's value
 		Iterator<String> keys = obj.keys();
 		while (keys.hasNext()) {
@@ -117,5 +92,9 @@ public class SettingsViewModel {
 		}
 		// Write settingsJsonObj to settings file
 		writeSettingsFile(settingsJsonObj.toString());
+	}
+	
+	private void createDefaultSettingsFile() {
+		writeSettingsFile(new WindowSettings().toJSONObject().toString());
 	}
 }
