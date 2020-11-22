@@ -145,10 +145,24 @@ public class EditorWindow extends JFrame {
 				}
 			}
 		});
+		// window settings
+		mSettingsVM.getWindowSettings().addObserver(new Observer() {
+			@Override
+			public void update(Observable arg0, Object o) {
+				WindowSettings settings = (WindowSettings) o;
+				// Set location and size based on settings
+				EditorWindow.this.setLocation(settings.getX(), settings.getY());
+				EditorWindow.this.setSize(settings.getWidth(), settings.getHeight());
+			}
+		});
 		
 		// Initialize component state from VM
 		EditorWindow.this.setTitle(mViewModel.getMemo().get().getFileName() + " - Memos");
 		mTextArea.setText(mViewModel.getMemo().get().getText());
+		// window
+		WindowSettings windowSettings = mSettingsVM.getWindowSettings().get();
+		EditorWindow.this.setLocation(windowSettings.getX(), windowSettings.getY());
+		EditorWindow.this.setSize(windowSettings.getWidth(), windowSettings.getHeight());
 		
 		// Add Swing components to JFrame's content pane
 		Container c = getContentPane();

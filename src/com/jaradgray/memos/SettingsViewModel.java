@@ -7,6 +7,7 @@ import java.nio.file.Files;
 import org.json.JSONObject;
 
 import com.jaradgray.observable.MutableObservableObject;
+import com.jaradgray.observable.ObservableObject;
 
 public class SettingsViewModel {
 	// Instance variables
@@ -19,6 +20,10 @@ public class SettingsViewModel {
 		String jsonString = getTextFromFile(getSettingsFile());
 		mWindowSettings.set(new WindowSettings(jsonString));
 	}
+	
+	
+	// Getters
+	public ObservableObject<WindowSettings> getWindowSettings() { return mWindowSettings; }
 	
 	
 	// Private methods
