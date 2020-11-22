@@ -95,7 +95,7 @@ public class EditorWindow extends JFrame {
 				MemoFile m = (MemoFile) arg1;
 				// Update view based on the given MemoFile
 				// window title
-				EditorWindow.this.setTitle(m.getFileName());
+				EditorWindow.this.setTitle(m.getFileName() + " - Memos");
 				// text area
 				mTextArea.setText(m.getText());
 			}
