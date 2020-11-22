@@ -20,7 +20,7 @@ public class EditorWindowViewModel {
 	public EditorWindowViewModel(Component component) {
 		mComponent = component;
 		mMemo = new MutableObservableObject<>();
-		mMemo.set(new MemoFile());
+		mMemo.set(new MemoFile("", ""));
 	}
 	
 	
@@ -44,10 +44,7 @@ public class EditorWindowViewModel {
 		writeTextFile(path, newText);
 		
 		// Update mMemo
-		MemoFile memo = new MemoFile();
-		memo.setFilePath(path);
-		memo.setText(newText);
-		mMemo.set(memo);
+		mMemo.set(new MemoFile(path, newText));
 	}
 	
 	public void saveChangesAs(String newText) {		
@@ -63,10 +60,7 @@ public class EditorWindowViewModel {
 			writeTextFile(file.getAbsolutePath(), newText);
 			
 			// Update mMemo
-			MemoFile memo = new MemoFile();
-			memo.setFilePath(file.getAbsolutePath());
-			memo.setText(newText);
-			mMemo.set(memo);
+			mMemo.set(new MemoFile(file.getAbsolutePath(), newText));
 		}
 	}
 	

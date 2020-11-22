@@ -6,6 +6,13 @@ public class MemoFile {
 	private String mFilePath;
 	private String mText;
 	
+	
+	// Constructor
+	public MemoFile(String path, String text) {
+		mFilePath = path;
+		mText = text;
+	}
+	
 	// Accessors
 	public String getFilePath() { return mFilePath; }
 	public void setFilePath(String filePath) { mFilePath = filePath; } 
@@ -17,7 +24,7 @@ public class MemoFile {
 	public String getFileName() {
 		String result = "";
 		File f = new File(mFilePath);
-		result = f.getName();
+		result = (f.getName().equals("")) ? "Untitled" : f.getName();
 		return result;
 	}
 }

@@ -101,7 +101,9 @@ public class EditorWindow extends JFrame {
 			}
 		});
 		
-		// TODO initialize component state from VM
+		// Initialize component state from VM
+		EditorWindow.this.setTitle(mViewModel.getMemo().get().getFileName() + " - Memos");
+		mTextArea.setText(mViewModel.getMemo().get().getText());
 		
 		// Add Swing components to JFrame's content pane
 		Container c = getContentPane();
