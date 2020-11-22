@@ -56,4 +56,13 @@ public class WindowSettings {
 	public int getY() { return mWindowY; }
 	public int getWidth() { return mWindowWidth; }
 	public int getHeight() { return mWindowHeight; }
+	
+	// Public methods
+	public JSONObject toJSONObject() {
+		return new JSONObject()
+				.put(KEY_WINDOW_X, mWindowX)
+				.put(KEY_WINDOW_Y, mWindowY)
+				.put(KEY_WINDOW_WIDTH, mWindowWidth)
+				.put(KEY_WINDOW_HEIGHT, mWindowHeight);
+	}
 }

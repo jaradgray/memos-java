@@ -3,7 +3,9 @@ package com.jaradgray.memos;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.Iterator;
 
+import org.apache.commons.io.FileUtils;
 import org.json.JSONObject;
 
 import com.jaradgray.observable.MutableObservableObject;
@@ -24,6 +26,16 @@ public class SettingsViewModel {
 	
 	// Getters
 	public ObservableObject<WindowSettings> getWindowSettings() { return mWindowSettings; }
+	
+	
+	// Public methods
+	public void onWindowClosing(int x, int y, int width, int height) {
+		// Update WindowSettings with new values
+		mWindowSettings.set(new WindowSettings(x, y, width, height));
+		// Update settings file with new values
+		JSONObject obj = mWindowSettings.get().toJSONObject();
+		updateSettingsFile(obj);
+	}
 	
 	
 	// Private methods
@@ -74,5 +86,36 @@ public class SettingsViewModel {
 			e.printStackTrace();
 		}
 		return result;
+	}
+	
+	/**
+	 * Writes @data to app's local settings file.
+	 * @param data
+	 */
+	private void writeSettingsFile(String data) {
+		try {
+			// Note: Writes a String to a file creating the file and parent directories if they do not exist
+			FileUtils.writeStringToFile(getSettingsFile(), data, "utf-8");
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Given a JSONObject, updates app's local settings file based on @obj.
+	 * The given JSONObject can contain a subset of the settings file's key-value pairs.
+	 * @param obj
+	 */
+	private void updateSettingsFile(JSONObject obj) {
+		// Get settings file data as a JSONObject
+		JSONObject settingsJsonObj = new JSONObject(getTextFromFile(getSettingsFile()));
+		// For each key in obj, overwrite settings object's corresponding value with given object's value
+		Iterator<String> keys = obj.keys();
+		while (keys.hasNext()) {
+			String key = keys.next();
+			settingsJsonObj.put(key, obj.get(key));
+		}
+		// Write settingsJsonObj to settings file
+		writeSettingsFile(settingsJsonObj.toString());
 	}
 }
