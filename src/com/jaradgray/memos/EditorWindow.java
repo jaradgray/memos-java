@@ -23,6 +23,7 @@ public class EditorWindow extends JFrame {
 	// Instance variables
 	private JTextArea mTextArea;
 	private EditorWindowViewModel mViewModel;
+	private SettingsViewModel mSettingsVM;
 	
 	
 	// Constructor
@@ -110,6 +111,7 @@ public class EditorWindow extends JFrame {
 		
 		// Get a ViewModel
 		mViewModel = new EditorWindowViewModel(this);
+		mSettingsVM = new SettingsViewModel();
 		
 		// Observe VM's data
 		// memo
