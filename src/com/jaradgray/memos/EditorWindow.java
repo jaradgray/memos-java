@@ -107,6 +107,21 @@ public class EditorWindow extends JFrame {
 		});
 		fileMenu.add(menuItem);
 		
+		// build the "Format" menu
+		formatMenu = new JMenu("Format");
+		formatMenu.setMnemonic(KeyEvent.VK_O);
+		menuBar.add(formatMenu);
+		
+		menuItem = new JMenuItem("Font...");
+		menuItem.setMnemonic(KeyEvent.VK_F);
+		menuItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				selectFont();
+			}
+		});
+		formatMenu.add(menuItem);
+		
 		// set JFrame's JMenuBar
 		setJMenuBar(menuBar);
 		
@@ -199,5 +214,9 @@ public class EditorWindow extends JFrame {
 	/** Closes this window via WindowEvent, as if the user clicked the "X" */
 	private void exit() {
 		this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+	}
+	
+	private void selectFont() {
+		System.out.println("select font");
 	}
 }
