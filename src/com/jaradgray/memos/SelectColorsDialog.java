@@ -39,7 +39,7 @@ public class SelectColorsDialog extends JDialog {
 		
 		fgColorPanel = new JPanel();
 		fgColorPanel.setLayout(new BoxLayout(fgColorPanel, BoxLayout.LINE_AXIS));
-		fgColorPanel.setAlignmentX(JComponent.LEFT_ALIGNMENT);
+		fgColorPanel.setAlignmentX(JComponent.RIGHT_ALIGNMENT);
 		fgColorPanel.add(new JLabel("Foreground color:"));
 		JPanel fgColorPreviewPanel = new JPanel();
 		fgColorPreviewPanel.setPreferredSize(new Dimension(100, 24));
@@ -64,7 +64,7 @@ public class SelectColorsDialog extends JDialog {
 		
 		bgColorPanel = new JPanel();
 		bgColorPanel.setLayout(new BoxLayout(bgColorPanel, BoxLayout.LINE_AXIS));
-		bgColorPanel.setAlignmentX(JComponent.LEFT_ALIGNMENT);
+		bgColorPanel.setAlignmentX(JComponent.RIGHT_ALIGNMENT);
 		bgColorPanel.add(new JLabel("Background color:"));
 		JPanel bgColorPreviewPanel = new JPanel();
 		bgColorPreviewPanel.setPreferredSize(new Dimension(100, 24));
@@ -89,7 +89,7 @@ public class SelectColorsDialog extends JDialog {
 		
 		buttonsPanel = new JPanel();
 		buttonsPanel.setLayout(new BoxLayout(buttonsPanel, BoxLayout.LINE_AXIS));
-		buttonsPanel.setAlignmentX(JComponent.LEFT_ALIGNMENT);
+		buttonsPanel.setAlignmentX(JComponent.RIGHT_ALIGNMENT);
 		JButton okButton = new JButton("Ok");
 		JButton cancelButton = new JButton("Cancel");
 		okButton.addActionListener(new ActionListener() {
