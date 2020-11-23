@@ -257,5 +257,7 @@ public class EditorWindow extends JFrame {
 	
 	private void selectThemeColors() {
 		System.out.println("select theme colors");
+		EditThemeDialog etd = new EditThemeDialog(this, "Edit Theme", true);
+		etd.setVisible(true);
 	}
 }
