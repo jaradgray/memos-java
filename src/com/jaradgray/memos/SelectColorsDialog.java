@@ -16,7 +16,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-public class EditThemeDialog extends JDialog {
+public class SelectColorsDialog extends JDialog {
 	// Constants
 	public static final int RESULT_APPLY = 0;
 	public static final int RESULT_APPLY_AND_SAVE = 1;
@@ -26,7 +26,7 @@ public class EditThemeDialog extends JDialog {
 	private int mDialogResult = -1;
 	
 	// Constructor
-	public EditThemeDialog(Frame owner, String title, boolean modal) {
+	public SelectColorsDialog(Frame owner, String title, boolean modal) {
 		super(owner, title, modal);
 		
 		// Set this Dialog's layout
@@ -57,7 +57,7 @@ public class EditThemeDialog extends JDialog {
 			public void actionPerformed(ActionEvent arg0) {
 				// Show a color chooser dialog
 				Color c = JColorChooser.showDialog(
-						EditThemeDialog.this,
+						SelectColorsDialog.this,
 						"Select foreground color",
 						fgColorPreviewPanel.getBackground());
 				if (c == null) {
@@ -82,7 +82,7 @@ public class EditThemeDialog extends JDialog {
 			public void actionPerformed(ActionEvent arg0) {
 				// Show a color chooser dialog				
 				Color c = JColorChooser.showDialog(
-						EditThemeDialog.this,
+						SelectColorsDialog.this,
 						"Select background color",
 						bgColorPreviewPanel.getBackground());
 				if (c == null) {
@@ -105,8 +105,8 @@ public class EditThemeDialog extends JDialog {
 			public void actionPerformed(ActionEvent arg0) {
 				// Set dialog result, hide and close this dialog
 				mDialogResult = RESULT_APPLY;
-				EditThemeDialog.this.setVisible(false);
-				EditThemeDialog.this.dispose();
+				SelectColorsDialog.this.setVisible(false);
+				SelectColorsDialog.this.dispose();
 			}
 		});
 		applyAndSaveButton.addActionListener(new ActionListener() {
@@ -114,8 +114,8 @@ public class EditThemeDialog extends JDialog {
 			public void actionPerformed(ActionEvent arg0) {
 				// Set dialog result, hide and close this dialog
 				mDialogResult = RESULT_APPLY_AND_SAVE;
-				EditThemeDialog.this.setVisible(false);
-				EditThemeDialog.this.dispose();	
+				SelectColorsDialog.this.setVisible(false);
+				SelectColorsDialog.this.dispose();	
 			}
 		});
 		cancelButton.addActionListener(new ActionListener() {
@@ -123,8 +123,8 @@ public class EditThemeDialog extends JDialog {
 			public void actionPerformed(ActionEvent arg0) {
 				// Set dialog result, hide and close this dialog
 				mDialogResult = RESULT_CANCEL;
-				EditThemeDialog.this.setVisible(false);
-				EditThemeDialog.this.dispose();	
+				SelectColorsDialog.this.setVisible(false);
+				SelectColorsDialog.this.dispose();	
 			}
 		});
 		buttonsPanel.add(applyButton);
