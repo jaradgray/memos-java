@@ -128,12 +128,22 @@ public class EditorWindow extends JFrame {
 		themeMenu.setMnemonic(KeyEvent.VK_T);
 		formatMenu.add(themeMenu);
 		
-		menuItem = new JMenuItem("Edit Theme...");
+		menuItem = new JMenuItem("Select Colors...");
 		menuItem.setMnemonic(KeyEvent.VK_S);
 		menuItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				selectThemeColors();
+			}
+		});
+		themeMenu.add(menuItem);
+		
+		menuItem = new JMenuItem("Save Current Theme...");
+		menuItem.setMnemonic(KeyEvent.VK_A);
+		menuItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				saveCurrentTheme();
 			}
 		});
 		themeMenu.add(menuItem);
@@ -270,5 +280,9 @@ public class EditorWindow extends JFrame {
 			default:
 				break;
 		}
+	}
+	
+	private void saveCurrentTheme() {
+		System.out.println("Save current theme");
 	}
 }
