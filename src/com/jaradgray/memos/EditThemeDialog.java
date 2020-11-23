@@ -17,6 +17,14 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 public class EditThemeDialog extends JDialog {
+	// Constants
+	public static final int RESULT_APPLY = 0;
+	public static final int RESULT_APPLY_AND_SAVE = 1;
+	public static final int RESULT_CANCEL = -1;
+	
+	// Instance variables
+	private int mDialogResult = -1;
+	
 	// Constructor
 	public EditThemeDialog(Frame owner, String title, boolean modal) {
 		super(owner, title, modal);
@@ -89,9 +97,39 @@ public class EditThemeDialog extends JDialog {
 		buttonsPanel = new JPanel();
 		buttonsPanel.setLayout(new BoxLayout(buttonsPanel, BoxLayout.LINE_AXIS));
 		buttonsPanel.setAlignmentX(JComponent.LEFT_ALIGNMENT);
-		buttonsPanel.add(new JButton("Apply"));
-		buttonsPanel.add(new JButton("Apply and save"));
-		buttonsPanel.add(new JButton("Cancel"));
+		JButton applyButton = new JButton("Apply");
+		JButton applyAndSaveButton = new JButton("Apply and save");
+		JButton cancelButton = new JButton("Cancel");
+		applyButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// Set dialog result, hide and close this dialog
+				mDialogResult = RESULT_APPLY;
+				EditThemeDialog.this.setVisible(false);
+				EditThemeDialog.this.dispose();
+			}
+		});
+		applyAndSaveButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// Set dialog result, hide and close this dialog
+				mDialogResult = RESULT_APPLY_AND_SAVE;
+				EditThemeDialog.this.setVisible(false);
+				EditThemeDialog.this.dispose();	
+			}
+		});
+		cancelButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// Set dialog result, hide and close this dialog
+				mDialogResult = RESULT_CANCEL;
+				EditThemeDialog.this.setVisible(false);
+				EditThemeDialog.this.dispose();	
+			}
+		});
+		buttonsPanel.add(applyButton);
+		buttonsPanel.add(applyAndSaveButton);
+		buttonsPanel.add(cancelButton);
 		
 		mainPanel.add(namePanel);
 		mainPanel.add(fgColorPanel);
@@ -103,5 +141,17 @@ public class EditThemeDialog extends JDialog {
 		// Add components to this JDialog's content pane
 		this.getContentPane().add(mainPanel, BorderLayout.CENTER);
 		this.pack();
+	}
+	
+	// Public methods
+	/**
+	 * Sets this dialog to visible and returns its result member.
+	 * Note: since setting visibility to true on a JDialog is a modal operation,
+	 * this method doesn't return until its visibility is set to false.
+	 * @return
+	 */
+	public int showDialog() {
+		this.setVisible(true);
+		return mDialogResult;
 	}
 }

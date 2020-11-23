@@ -256,8 +256,19 @@ public class EditorWindow extends JFrame {
 	}
 	
 	private void selectThemeColors() {
-		System.out.println("select theme colors");
 		EditThemeDialog etd = new EditThemeDialog(this, "Edit Theme", true);
-		etd.setVisible(true);
+		int result = etd.showDialog();
+		switch (result) {
+			case EditThemeDialog.RESULT_APPLY:
+				// TODO handle apply
+				System.out.println("apply");
+				break;
+			case EditThemeDialog.RESULT_APPLY_AND_SAVE:
+				// TODO handle apply and save
+				System.out.println("apply and save");
+				break;
+			default:
+				break;
+		}
 	}
 }
