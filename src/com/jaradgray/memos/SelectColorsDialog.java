@@ -6,6 +6,8 @@ import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Observable;
+import java.util.Observer;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -25,7 +27,7 @@ public class SelectColorsDialog extends JDialog {
 	private int mDialogResult = -1;
 	
 	// Constructor
-	public SelectColorsDialog(Frame owner, String title, boolean modal, ThemeViewModel vm) {
+	public SelectColorsDialog(Frame owner, String title, boolean modal, SettingsViewModel vm) {
 		super(owner, title, modal);
 		
 		// Set this Dialog's layout
@@ -120,6 +122,10 @@ public class SelectColorsDialog extends JDialog {
 		// Create Swing components
 		
 		// TODO observe ViewModel's data
+		
+		// TODO Initialize View data to vm's state
+//		fgColorPanel.setBackground(vm.getFgColorTransient().get());
+//		bgColorPanel.setBackground(vm.getBgColorTransient().get());
 		
 		// Add components to this JDialog's content pane
 		this.getContentPane().add(mainPanel, BorderLayout.CENTER);
