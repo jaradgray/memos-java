@@ -232,7 +232,8 @@ public class EditorWindow extends JFrame {
 	private void selectFont() {
 		// Show a JFontChooser dialog
 		JFontChooser fc = new JFontChooser();
-		// TODO set fc's selections based on mTextArea's current settings
+		// set fc's selections based on mTextArea's current settings
+		fc.setSelectedFont(mTextArea.getFont());
 		if (fc.showDialog(this) == JFontChooser.OK_OPTION) {
 			// Notify mSettingsVM of the new font settings
 			mSettingsVM.onFontSelected(fc.getSelectedFont());
