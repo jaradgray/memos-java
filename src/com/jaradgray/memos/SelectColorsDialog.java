@@ -25,7 +25,7 @@ public class SelectColorsDialog extends JDialog {
 	private int mDialogResult = -1;
 	
 	// Constructor
-	public SelectColorsDialog(Frame owner, String title, boolean modal) {
+	public SelectColorsDialog(Frame owner, String title, boolean modal, ThemeViewModel vm) {
 		super(owner, title, modal);
 		
 		// Set this Dialog's layout
@@ -118,6 +118,8 @@ public class SelectColorsDialog extends JDialog {
 		mainPanel.add(buttonsPanel);
 		
 		// Create Swing components
+		
+		// TODO observe ViewModel's data
 		
 		// Add components to this JDialog's content pane
 		this.getContentPane().add(mainPanel, BorderLayout.CENTER);

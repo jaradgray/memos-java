@@ -26,6 +26,7 @@ public class EditorWindow extends JFrame {
 	private JTextArea mTextArea;
 	private EditorWindowViewModel mViewModel;
 	private SettingsViewModel mSettingsVM;
+	private ThemeViewModel mThemeVM;
 	
 	
 	// Constructor
@@ -154,6 +155,7 @@ public class EditorWindow extends JFrame {
 		// Get a ViewModel
 		mViewModel = new EditorWindowViewModel(this);
 		mSettingsVM = new SettingsViewModel();
+		mThemeVM = new ThemeViewModel();
 		
 		// Observe VM's data
 		// memo
@@ -206,6 +208,8 @@ public class EditorWindow extends JFrame {
 				mTextArea.setFont(settings.getFont());
 			}
 		});
+		
+		// TODO observe ThemeViewModel's data
 		
 		// Initialize component state from VM
 		EditorWindow.this.setTitle(mViewModel.getMemo().get().getFileName() + " - Memos");
@@ -266,7 +270,7 @@ public class EditorWindow extends JFrame {
 	}
 	
 	private void selectThemeColors() {
-		SelectColorsDialog scd = new SelectColorsDialog(this, "Edit Theme", true);
+		SelectColorsDialog scd = new SelectColorsDialog(this, "Edit Theme", true, mThemeVM);
 		int result = scd.showDialog();
 		switch (result) {
 			case SelectColorsDialog.RESULT_OK:
