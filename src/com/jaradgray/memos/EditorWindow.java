@@ -189,6 +189,9 @@ public class EditorWindow extends JFrame {
 		WindowSettings windowSettings = mSettingsVM.getWindowSettings().get();
 		EditorWindow.this.setLocation(windowSettings.getX(), windowSettings.getY());
 		EditorWindow.this.setSize(windowSettings.getWidth(), windowSettings.getHeight());
+		// font
+		FontSettings fontSettings = mSettingsVM.getFontSettings().get();
+		mTextArea.setFont(fontSettings.getFont());
 		
 		// Listen for window events
 		this.addWindowListener(new WindowAdapter() {
