@@ -4,9 +4,12 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Frame;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JColorChooser;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -41,7 +44,20 @@ public class EditThemeDialog extends JDialog {
 		fgColorPreviewPanel.setPreferredSize(new Dimension(100, 24));
 		fgColorPreviewPanel.setBackground(Color.red);
 		JButton fgColorButton = new JButton("Select color...");
-		// TODO handle button clicks
+		fgColorButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// Show a color chooser dialog
+				Color c = JColorChooser.showDialog(
+						EditThemeDialog.this,
+						"Select foreground color",
+						fgColorPreviewPanel.getBackground());
+				if (c == null) {
+					return;
+				}
+				fgColorPreviewPanel.setBackground(c);
+			}
+		});
 		fgColorPanel.add(fgColorPreviewPanel);
 		fgColorPanel.add(fgColorButton);
 		
@@ -53,7 +69,20 @@ public class EditThemeDialog extends JDialog {
 		bgColorPreviewPanel.setPreferredSize(new Dimension(100, 24));
 		bgColorPreviewPanel.setBackground(Color.blue);
 		JButton bgColorButton = new JButton("Select color...");
-		// TODO handle button clicks
+		bgColorButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// Show a color chooser dialog				
+				Color c = JColorChooser.showDialog(
+						EditThemeDialog.this,
+						"Select background color",
+						bgColorPreviewPanel.getBackground());
+				if (c == null) {
+					return;
+				}
+				bgColorPreviewPanel.setBackground(c);
+			}
+		});
 		bgColorPanel.add(bgColorPreviewPanel);
 		bgColorPanel.add(bgColorButton);
 		
