@@ -83,7 +83,7 @@ public class SettingsViewModel {
 	
 	/**
 	 * Given a JSONObject, updates app's local settings file based on @obj.
-	 * The given JSONObject can contain a subset of the settings file's key-value pairs.
+	 * Only those keys in @obj are overwritten in the settings file.
 	 * @param obj
 	 */
 	private void updateSettingsFile(JSONObject obj) {
