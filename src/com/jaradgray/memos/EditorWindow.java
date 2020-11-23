@@ -128,7 +128,7 @@ public class EditorWindow extends JFrame {
 		themeMenu.setMnemonic(KeyEvent.VK_T);
 		formatMenu.add(themeMenu);
 		
-		menuItem = new JMenuItem("Select Colors...");
+		menuItem = new JMenuItem("Edit Theme...");
 		menuItem.setMnemonic(KeyEvent.VK_S);
 		menuItem.addActionListener(new ActionListener() {
 			@Override
