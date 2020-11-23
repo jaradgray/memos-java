@@ -62,7 +62,7 @@ public class EditorWindow extends JFrame {
 		
 		// menu bar
 		JMenuBar menuBar;
-		JMenu fileMenu, editMenu, formatMenu;
+		JMenu fileMenu, editMenu, formatMenu, themeMenu;
 		JMenuItem menuItem; // just need one JMenuItem according to the docs
 		
 		menuBar = new JMenuBar();
@@ -122,6 +122,21 @@ public class EditorWindow extends JFrame {
 			}
 		});
 		formatMenu.add(menuItem);
+		
+		// build the "Format -> Theme" menu
+		themeMenu = new JMenu("Theme");
+		themeMenu.setMnemonic(KeyEvent.VK_T);
+		formatMenu.add(themeMenu);
+		
+		menuItem = new JMenuItem("Select Colors...");
+		menuItem.setMnemonic(KeyEvent.VK_S);
+		menuItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				selectThemeColors();
+			}
+		});
+		themeMenu.add(menuItem);
 		
 		// set JFrame's JMenuBar
 		setJMenuBar(menuBar);
@@ -238,5 +253,9 @@ public class EditorWindow extends JFrame {
 			// Notify mSettingsVM of the new font settings
 			mSettingsVM.onFontSelected(fc.getSelectedFont());
 		}
+	}
+	
+	private void selectThemeColors() {
+		System.out.println("select theme colors");
 	}
 }
