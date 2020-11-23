@@ -1,5 +1,6 @@
 package com.jaradgray.memos;
 
+import java.awt.Font;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -17,21 +18,24 @@ public class SettingsViewModel {
 	
 	// Instance variables
 	private MutableObservableObject<WindowSettings> mWindowSettings = new MutableObservableObject<>();
+	private MutableObservableObject<FontSettings> mFontSettings = new MutableObservableObject<>();
 	
 	// Constructor
 	public SettingsViewModel() {		
-		// Set mWindowSettings member based on settings file data, create settings file if it doesn't exist
+		// Set members based on settings file data, create settings file if it doesn't exist
 		File settingsFile = new File(SETTINGS_FILE_PATH);
 		if (!settingsFile.exists()) {
 			createDefaultSettingsFile();
 		}
 		String json = getTextFromFile(settingsFile);
 		mWindowSettings.set(new WindowSettings(json));
+		mFontSettings.set(new FontSettings(json));
 	}
 	
 	
 	// Getters
 	public ObservableObject<WindowSettings> getWindowSettings() { return mWindowSettings; }
+	public ObservableObject<FontSettings> getFontSettings() { return mFontSettings; }
 	
 	
 	// Public methods
@@ -40,6 +44,14 @@ public class SettingsViewModel {
 		mWindowSettings.set(new WindowSettings(x, y, width, height));
 		// Update settings file with new values
 		JSONObject obj = mWindowSettings.get().toJSONObject();
+		updateSettingsFile(obj);
+	}
+	
+	public void onFontSelected(Font font) {
+		// Update FontSettings with new Font
+		mFontSettings.set(new FontSettings(font));
+		// Update settings file with new font values
+		JSONObject obj = mFontSettings.get().toJSONObject();
 		updateSettingsFile(obj);
 	}
 	
@@ -95,6 +107,20 @@ public class SettingsViewModel {
 	}
 	
 	private void createDefaultSettingsFile() {
-		writeSettingsFile(new WindowSettings().toJSONObject().toString());
+		// Create default *Settings objects and get their JSONObject representations
+		JSONObject windowSettingsObj = new WindowSettings().toJSONObject();
+		JSONObject fontSettingsObj = new FontSettings().toJSONObject();
+		
+		// Merge all settings JSONObjects into a single JSONObject
+		JSONObject merged = new JSONObject();
+		for (String key : JSONObject.getNames(windowSettingsObj)) {
+			merged.put(key, windowSettingsObj.get(key));
+		}
+		for (String key : JSONObject.getNames(fontSettingsObj)) {
+			merged.put(key, fontSettingsObj.get(key));
+		}
+		
+		// Write merged JSONObject to settings file
+		writeSettingsFile(merged.toString());
 	}
 }

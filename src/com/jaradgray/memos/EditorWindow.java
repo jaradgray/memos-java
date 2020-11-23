@@ -2,6 +2,7 @@ package com.jaradgray.memos;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -171,6 +172,15 @@ public class EditorWindow extends JFrame {
 				EditorWindow.this.setSize(settings.getWidth(), settings.getHeight());
 			}
 		});
+		// font settings
+		mSettingsVM.getFontSettings().addObserver(new Observer() {
+			@Override
+			public void update(Observable arg0, Object o) {
+				FontSettings settings = (FontSettings) o;
+				// Set mTextArea data based on settings
+				mTextArea.setFont(settings.getFont());
+			}
+		});
 		
 		// Initialize component state from VM
 		EditorWindow.this.setTitle(mViewModel.getMemo().get().getFileName() + " - Memos");
@@ -217,6 +227,12 @@ public class EditorWindow extends JFrame {
 	}
 	
 	private void selectFont() {
-		System.out.println("select font");
+		// Show a JFontChooser dialog
+		JFontChooser fc = new JFontChooser();
+		// TODO set fc's selections based on mTextArea's current settings
+		if (fc.showDialog(this) == JFontChooser.OK_OPTION) {
+			// Notify mSettingsVM of the new font settings
+			mSettingsVM.onFontSelected(fc.getSelectedFont());
+		}
 	}
 }
