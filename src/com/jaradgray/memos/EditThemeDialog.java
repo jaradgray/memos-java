@@ -1,6 +1,8 @@
 package com.jaradgray.memos;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Frame;
 
 import javax.swing.BoxLayout;
@@ -35,13 +37,25 @@ public class EditThemeDialog extends JDialog {
 		fgColorPanel.setLayout(new BoxLayout(fgColorPanel, BoxLayout.LINE_AXIS));
 		fgColorPanel.setAlignmentX(JComponent.LEFT_ALIGNMENT);
 		fgColorPanel.add(new JLabel("Foreground color:"));
-		// TODO add a button or something that indicates current fg color
+		JPanel fgColorPreviewPanel = new JPanel();
+		fgColorPreviewPanel.setPreferredSize(new Dimension(100, 24));
+		fgColorPreviewPanel.setBackground(Color.red);
+		JButton fgColorButton = new JButton("Select color...");
+		// TODO handle button clicks
+		fgColorPanel.add(fgColorPreviewPanel);
+		fgColorPanel.add(fgColorButton);
 		
 		bgColorPanel = new JPanel();
 		bgColorPanel.setLayout(new BoxLayout(bgColorPanel, BoxLayout.LINE_AXIS));
 		bgColorPanel.setAlignmentX(JComponent.LEFT_ALIGNMENT);
 		bgColorPanel.add(new JLabel("Background color:"));
-		// TODO add a button or something that indicates current bg color
+		JPanel bgColorPreviewPanel = new JPanel();
+		bgColorPreviewPanel.setPreferredSize(new Dimension(100, 24));
+		bgColorPreviewPanel.setBackground(Color.blue);
+		JButton bgColorButton = new JButton("Select color...");
+		// TODO handle button clicks
+		bgColorPanel.add(bgColorPreviewPanel);
+		bgColorPanel.add(bgColorButton);
 		
 		buttonsPanel = new JPanel();
 		buttonsPanel.setLayout(new BoxLayout(buttonsPanel, BoxLayout.LINE_AXIS));
