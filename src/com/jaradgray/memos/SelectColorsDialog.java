@@ -33,16 +33,10 @@ public class SelectColorsDialog extends JDialog {
 		this.setLayout(new BorderLayout());
 		
 		// Create GUI layout
-		JPanel mainPanel, namePanel, fgColorPanel, bgColorPanel, buttonsPanel;
+		JPanel mainPanel, fgColorPanel, bgColorPanel, buttonsPanel;
 		
 		mainPanel = new JPanel();
 		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.PAGE_AXIS));
-		
-		namePanel = new JPanel();
-		namePanel.setLayout(new BoxLayout(namePanel, BoxLayout.LINE_AXIS));
-		namePanel.setAlignmentX(JComponent.LEFT_ALIGNMENT);
-		namePanel.add(new JLabel("Theme name:"));
-		namePanel.add(new JTextField());
 		
 		fgColorPanel = new JPanel();
 		fgColorPanel.setLayout(new BoxLayout(fgColorPanel, BoxLayout.LINE_AXIS));
@@ -131,7 +125,6 @@ public class SelectColorsDialog extends JDialog {
 		buttonsPanel.add(applyAndSaveButton);
 		buttonsPanel.add(cancelButton);
 		
-		mainPanel.add(namePanel);
 		mainPanel.add(fgColorPanel);
 		mainPanel.add(bgColorPanel);
 		mainPanel.add(buttonsPanel);
