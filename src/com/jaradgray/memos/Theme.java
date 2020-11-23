@@ -16,7 +16,13 @@ public class Theme {
 	 * @param obj
 	 */
 	public Theme(JSONObject obj) {
-		// TODO Initialize instance variables based on given JSONObject
+		// Initialize instance variables based on given JSONObject
+		mName = obj.getString(ThemeSettings.KEY_CURRENT_THEME_NAME);
+		String fgString = obj.getString(ThemeSettings.KEY_FG_COLOR);
+		String bgString = obj.getString(ThemeSettings.KEY_BG_COLOR);
+		
+		mFgColor = Color.decode(fgString);
+		mBgColor = Color.decode(bgString);
 	}
 	
 	// Getters
