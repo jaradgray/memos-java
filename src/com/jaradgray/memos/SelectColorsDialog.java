@@ -18,8 +18,7 @@ import javax.swing.JTextField;
 
 public class SelectColorsDialog extends JDialog {
 	// Constants
-	public static final int RESULT_APPLY = 0;
-	public static final int RESULT_APPLY_AND_SAVE = 1;
+	public static final int RESULT_OK = 0;
 	public static final int RESULT_CANCEL = -1;
 	
 	// Instance variables
@@ -91,25 +90,15 @@ public class SelectColorsDialog extends JDialog {
 		buttonsPanel = new JPanel();
 		buttonsPanel.setLayout(new BoxLayout(buttonsPanel, BoxLayout.LINE_AXIS));
 		buttonsPanel.setAlignmentX(JComponent.LEFT_ALIGNMENT);
-		JButton applyButton = new JButton("Apply");
-		JButton applyAndSaveButton = new JButton("Apply and save");
+		JButton okButton = new JButton("Ok");
 		JButton cancelButton = new JButton("Cancel");
-		applyButton.addActionListener(new ActionListener() {
+		okButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// Set dialog result, hide and close this dialog
-				mDialogResult = RESULT_APPLY;
+				mDialogResult = RESULT_OK;
 				SelectColorsDialog.this.setVisible(false);
 				SelectColorsDialog.this.dispose();
-			}
-		});
-		applyAndSaveButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				// Set dialog result, hide and close this dialog
-				mDialogResult = RESULT_APPLY_AND_SAVE;
-				SelectColorsDialog.this.setVisible(false);
-				SelectColorsDialog.this.dispose();	
 			}
 		});
 		cancelButton.addActionListener(new ActionListener() {
@@ -121,8 +110,7 @@ public class SelectColorsDialog extends JDialog {
 				SelectColorsDialog.this.dispose();	
 			}
 		});
-		buttonsPanel.add(applyButton);
-		buttonsPanel.add(applyAndSaveButton);
+		buttonsPanel.add(okButton);
 		buttonsPanel.add(cancelButton);
 		
 		mainPanel.add(fgColorPanel);

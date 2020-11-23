@@ -269,13 +269,13 @@ public class EditorWindow extends JFrame {
 		SelectColorsDialog scd = new SelectColorsDialog(this, "Edit Theme", true);
 		int result = scd.showDialog();
 		switch (result) {
-			case SelectColorsDialog.RESULT_APPLY:
-				// TODO handle apply
-				System.out.println("apply");
+			case SelectColorsDialog.RESULT_OK:
+				// TODO handle ok
+				System.out.println("Ok");
 				break;
-			case SelectColorsDialog.RESULT_APPLY_AND_SAVE:
-				// TODO handle apply and save
-				System.out.println("apply and save");
+			case SelectColorsDialog.RESULT_CANCEL:
+				// TODO handle cancel
+				System.out.println("Cancel");
 				break;
 			default:
 				break;
