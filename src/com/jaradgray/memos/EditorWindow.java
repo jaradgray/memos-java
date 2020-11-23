@@ -2,6 +2,7 @@ package com.jaradgray.memos;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -107,6 +108,21 @@ public class EditorWindow extends JFrame {
 		});
 		fileMenu.add(menuItem);
 		
+		// build the "Format" menu
+		formatMenu = new JMenu("Format");
+		formatMenu.setMnemonic(KeyEvent.VK_O);
+		menuBar.add(formatMenu);
+		
+		menuItem = new JMenuItem("Font...");
+		menuItem.setMnemonic(KeyEvent.VK_F);
+		menuItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				selectFont();
+			}
+		});
+		formatMenu.add(menuItem);
+		
 		// set JFrame's JMenuBar
 		setJMenuBar(menuBar);
 		
@@ -156,6 +172,15 @@ public class EditorWindow extends JFrame {
 				EditorWindow.this.setSize(settings.getWidth(), settings.getHeight());
 			}
 		});
+		// font settings
+		mSettingsVM.getFontSettings().addObserver(new Observer() {
+			@Override
+			public void update(Observable arg0, Object o) {
+				FontSettings settings = (FontSettings) o;
+				// Set mTextArea data based on settings
+				mTextArea.setFont(settings.getFont());
+			}
+		});
 		
 		// Initialize component state from VM
 		EditorWindow.this.setTitle(mViewModel.getMemo().get().getFileName() + " - Memos");
@@ -164,6 +189,9 @@ public class EditorWindow extends JFrame {
 		WindowSettings windowSettings = mSettingsVM.getWindowSettings().get();
 		EditorWindow.this.setLocation(windowSettings.getX(), windowSettings.getY());
 		EditorWindow.this.setSize(windowSettings.getWidth(), windowSettings.getHeight());
+		// font
+		FontSettings fontSettings = mSettingsVM.getFontSettings().get();
+		mTextArea.setFont(fontSettings.getFont());
 		
 		// Listen for window events
 		this.addWindowListener(new WindowAdapter() {
@@ -199,5 +227,16 @@ public class EditorWindow extends JFrame {
 	/** Closes this window via WindowEvent, as if the user clicked the "X" */
 	private void exit() {
 		this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+	}
+	
+	private void selectFont() {
+		// Show a JFontChooser dialog
+		JFontChooser fc = new JFontChooser();
+		// set fc's selections based on mTextArea's current settings
+		fc.setSelectedFont(mTextArea.getFont());
+		if (fc.showDialog(this) == JFontChooser.OK_OPTION) {
+			// Notify mSettingsVM of the new font settings
+			mSettingsVM.onFontSelected(fc.getSelectedFont());
+		}
 	}
 }
