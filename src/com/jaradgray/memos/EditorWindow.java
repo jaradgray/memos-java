@@ -1,8 +1,8 @@
 package com.jaradgray.memos;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Container;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -62,7 +62,7 @@ public class EditorWindow extends JFrame {
 		
 		// menu bar
 		JMenuBar menuBar;
-		JMenu fileMenu, editMenu, formatMenu;
+		JMenu fileMenu, editMenu, formatMenu, themeMenu;
 		JMenuItem menuItem; // just need one JMenuItem according to the docs
 		
 		menuBar = new JMenuBar();
@@ -123,6 +123,31 @@ public class EditorWindow extends JFrame {
 		});
 		formatMenu.add(menuItem);
 		
+		// build the "Format -> Theme" menu
+		themeMenu = new JMenu("Theme");
+		themeMenu.setMnemonic(KeyEvent.VK_T);
+		formatMenu.add(themeMenu);
+		
+		menuItem = new JMenuItem("Select Colors...");
+		menuItem.setMnemonic(KeyEvent.VK_S);
+		menuItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				selectThemeColors();
+			}
+		});
+		themeMenu.add(menuItem);
+		
+		menuItem = new JMenuItem("Save Current Theme...");
+		menuItem.setMnemonic(KeyEvent.VK_A);
+		menuItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				saveCurrentTheme();
+			}
+		});
+		themeMenu.add(menuItem);
+		
 		// set JFrame's JMenuBar
 		setJMenuBar(menuBar);
 		
@@ -182,6 +207,20 @@ public class EditorWindow extends JFrame {
 			}
 		});
 		
+		// Observe theme data
+		mSettingsVM.getThemeSettings().addObserver(new Observer() {
+			@Override
+			public void update(Observable o, Object arg) {
+				ThemeSettings ts = (ThemeSettings) arg;
+				
+				// Update text area based on transient fg and bg colors
+				mTextArea.setForeground(ts.getFgColorTransient());
+				mTextArea.setBackground(ts.getBgColorTransient());
+				
+				// TODO Update Format -> Theme menu based on all themes
+			}
+		});
+		
 		// Initialize component state from VM
 		EditorWindow.this.setTitle(mViewModel.getMemo().get().getFileName() + " - Memos");
 		mTextArea.setText(mViewModel.getMemo().get().getText());
@@ -238,5 +277,29 @@ public class EditorWindow extends JFrame {
 			// Notify mSettingsVM of the new font settings
 			mSettingsVM.onFontSelected(fc.getSelectedFont());
 		}
+	}
+	
+	private void selectThemeColors() {
+		Color cachedFgColor = mSettingsVM.getThemeSettings().get().getFgColorTransient();
+		Color cachedBgColor = mSettingsVM.getThemeSettings().get().getBgColorTransient();
+		SelectColorsDialog scd = new SelectColorsDialog(this, "Select Theme Colors", true, mSettingsVM);
+		int result = scd.showDialog();
+		switch (result) {
+			case SelectColorsDialog.RESULT_OK:
+				// "Keep changes" by doing nothing
+				break;
+			case SelectColorsDialog.RESULT_CANCEL:
+				// "Discard changes" by updating SettingVM's transient colors with cached colors
+				mSettingsVM.onFgColorTransientChanged(cachedFgColor);
+				mSettingsVM.onBgColorTransientChanged(cachedBgColor);
+				break;
+			default:
+				System.err.println("selectThemeColors(): unrecognized dialog result [" + result + "]");
+				break;
+		}
+	}
+	
+	private void saveCurrentTheme() {
+		System.out.println("Save current theme");
 	}
 }
