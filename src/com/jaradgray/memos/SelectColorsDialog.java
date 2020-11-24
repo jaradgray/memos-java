@@ -16,7 +16,10 @@ import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+
+import com.jaradgray.memos.ColorChooserPanel.ColorChooserListener;
 
 public class SelectColorsDialog extends JDialog {
 	// Constants
@@ -34,62 +37,33 @@ public class SelectColorsDialog extends JDialog {
 		this.setLayout(new BorderLayout());
 		
 		// Create GUI layout
-		JPanel mainPanel, fgColorPanel, bgColorPanel, buttonsPanel;
+		JPanel mainPanel, buttonsPanel;
+		ColorChooserPanel fgChooser, bgChooser;
 		
 		mainPanel = new JPanel();
 		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.PAGE_AXIS));
 		
-		fgColorPanel = new JPanel();
-		fgColorPanel.setLayout(new BoxLayout(fgColorPanel, BoxLayout.LINE_AXIS));
-		fgColorPanel.setAlignmentX(JComponent.RIGHT_ALIGNMENT);
-		fgColorPanel.add(new JLabel("Foreground color:"));
-		JPanel fgColorPreviewPanel = new JPanel();
-		fgColorPreviewPanel.setPreferredSize(new Dimension(100, 24));
-		fgColorPreviewPanel.setBackground(Color.red);
-		JButton fgColorButton = new JButton("Select color...");
-		fgColorButton.addActionListener(new ActionListener() {
+		fgChooser = new ColorChooserPanel(vm.getThemeSettings().get().getFgColorTransient(), "Foreground");
+		fgChooser.setAlignmentX(JComponent.RIGHT_ALIGNMENT);
+		fgChooser.setListener(new ColorChooserListener() {
 			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				// Show a color chooser dialog
-				Color c = JColorChooser.showDialog(
-						SelectColorsDialog.this,
-						"Select foreground color",
-						fgColorPreviewPanel.getBackground());
-				if (c == null) {
-					return;
-				}
-				// Notify SettingsVM
-				vm.onFgColorTransientChanged(c);
+			public void colorChanged(Color c) {
+				// TODO Notify SettingsVM
+//				vm.onFgColorTransientChanged(c);
+				System.out.println("color changed to " + c);
 			}
 		});
-		fgColorPanel.add(fgColorPreviewPanel);
-		fgColorPanel.add(fgColorButton);
-		
-		bgColorPanel = new JPanel();
-		bgColorPanel.setLayout(new BoxLayout(bgColorPanel, BoxLayout.LINE_AXIS));
-		bgColorPanel.setAlignmentX(JComponent.RIGHT_ALIGNMENT);
-		bgColorPanel.add(new JLabel("Background color:"));
-		JPanel bgColorPreviewPanel = new JPanel();
-		bgColorPreviewPanel.setPreferredSize(new Dimension(100, 24));
-		bgColorPreviewPanel.setBackground(Color.blue);
-		JButton bgColorButton = new JButton("Select color...");
-		bgColorButton.addActionListener(new ActionListener() {
+
+		bgChooser = new ColorChooserPanel(vm.getThemeSettings().get().getBgColorTransient(), "Background");
+		bgChooser.setAlignmentX(JComponent.RIGHT_ALIGNMENT);
+		bgChooser.setListener(new ColorChooserListener() {
 			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				// Show a color chooser dialog				
-				Color c = JColorChooser.showDialog(
-						SelectColorsDialog.this,
-						"Select background color",
-						bgColorPreviewPanel.getBackground());
-				if (c == null) {
-					return;
-				}
-				// Notify SettingsVM
-				vm.onBgColorTransientChanged(c);
+			public void colorChanged(Color c) {
+				// TODO Notify SettingsVM
+//				vm.onBgColorTransientChanged(c);
+				System.out.println("color changed to " + c);
 			}
 		});
-		bgColorPanel.add(bgColorPreviewPanel);
-		bgColorPanel.add(bgColorButton);
 		
 		buttonsPanel = new JPanel();
 		buttonsPanel.setLayout(new BoxLayout(buttonsPanel, BoxLayout.LINE_AXIS));
@@ -117,28 +91,11 @@ public class SelectColorsDialog extends JDialog {
 		buttonsPanel.add(okButton);
 		buttonsPanel.add(cancelButton);
 		
-		mainPanel.add(fgColorPanel);
-		mainPanel.add(bgColorPanel);
-		mainPanel.add(buttonsPanel);
+		mainPanel.add(fgChooser);
+		mainPanel.add(bgChooser);
+		mainPanel.add(buttonsPanel);		
 		
 		// Create Swing components
-		
-		// TODO observe ViewModel's data
-		vm.getThemeSettings().addObserver(new Observer() {
-			@Override
-			public void update(Observable arg0, Object o) {
-				ThemeSettings ts = (ThemeSettings) o;
-				// we're observing the entire ThemeSettings object
-				// 	all we need to do is set colors based on transient colors
-				fgColorPreviewPanel.setBackground(ts.getFgColorTransient());
-				bgColorPreviewPanel.setBackground(ts.getBgColorTransient());
-			}
-		});
-		
-		// TODO Initialize View data to vm's state
-		ThemeSettings ts = vm.getThemeSettings().get();
-		fgColorPreviewPanel.setBackground(ts.getFgColorTransient());
-		bgColorPreviewPanel.setBackground(ts.getBgColorTransient());
 		
 		// Add components to this JDialog's content pane
 		this.getContentPane().add(mainPanel, BorderLayout.CENTER);
