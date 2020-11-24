@@ -26,8 +26,6 @@ public class ThemeSettings {
 	public static final String KEY_FG_COLOR = "fg_color";
 	public static final String KEY_BG_COLOR = "bg_color";
 	
-	public static final String DEFAULT_THEME_NAME = BUNDLED_THEME_NAME_0;
-	
 	
 	// Instance variables
 	private Color mFgColorTransient;	// current non-persisted fg color
@@ -61,8 +59,10 @@ public class ThemeSettings {
 	 * Constructs a new ThemeSettings with default values
 	 */
 	public ThemeSettings() {
-//		mTheme = new Theme();
-//		mFgColorTransient = new Color(mTheme.getFgColor());
+		mTheme = new Theme();
+		// TODO might need to instantiate new Color objects instead of referencing mTheme's
+		mFgColorTransient = mTheme.getFgColor();
+		mBgColorTransient = mTheme.getBgColor();
 	}
 	
 	

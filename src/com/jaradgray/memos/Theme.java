@@ -25,6 +25,16 @@ public class Theme {
 		mBgColor = Color.decode(bgString);
 	}
 	
+	/**
+	 * Constructs a Theme object with default values
+	 */
+	public Theme() {
+		// Use bundled Theme "0"'s values as the default values
+		mName = ThemeSettings.BUNDLED_THEME_NAME_0;
+		mFgColor = Color.decode(ThemeSettings.BUNDLED_THEME_FG_COLOR_0);
+		mBgColor = Color.decode(ThemeSettings.BUNDLED_THEME_BG_COLOR_0);		
+	}
+	
 	// Getters
 	public String getName() { return mName; }
 	public Color getFgColor() { return mFgColor; }
