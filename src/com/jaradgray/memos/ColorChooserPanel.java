@@ -9,8 +9,16 @@ import javax.swing.JColorChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 public class ColorChooserPanel extends JPanel {
+	public interface ColorChooserListener {
+		void colorChanged(Color c);
+	}
+	private ColorChooserListener mListener;
+	public void setListener(ColorChooserListener listener) { mListener = listener; }
+	
 	// Constructor
 	public ColorChooserPanel(Color initialColor, String previewText) {
 		super(new BorderLayout());
@@ -29,6 +37,15 @@ public class ColorChooserPanel extends JPanel {
 		// Set up ColorChooser
 		JColorChooser colorChooser = new JColorChooser(initialColor);
 		colorChooser.setPreviewPanel(new JPanel()); // remove default preview panel
+		colorChooser.getSelectionModel().addChangeListener(new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				// Notify listener
+				if (mListener != null) {
+					mListener.colorChanged(colorChooser.getColor());
+				}
+			}
+		});
 		
 		// Add components
 		this.add(previewLabel, BorderLayout.CENTER);
