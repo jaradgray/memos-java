@@ -17,7 +17,7 @@ public class Theme {
 	 */
 	public Theme(JSONObject obj) {
 		// Initialize instance variables based on given JSONObject
-		mName = obj.getString(ThemeSettings.KEY_CURRENT_THEME_NAME);
+		mName = obj.getString(ThemeSettings.KEY_THEME_NAME);
 		String fgString = obj.getString(ThemeSettings.KEY_FG_COLOR);
 		String bgString = obj.getString(ThemeSettings.KEY_BG_COLOR);
 		
@@ -39,4 +39,31 @@ public class Theme {
 	public String getName() { return mName; }
 	public Color getFgColor() { return mFgColor; }
 	public Color getBgColor() { return mBgColor; }
+	
+	
+	// Public methods
+	
+	/**
+	 * Returns this Theme object's data represented as a JSONObject
+	 * @return
+	 */
+	public JSONObject toJSONObject() {
+		// Convert Color members to hex strings (e.g. "#FFFFFF")
+		int r, g, b;
+		// fg
+		r = mFgColor.getRed();
+		g = mFgColor.getGreen();
+		b = mFgColor.getBlue();
+		String fgHexString = String.format("#%02X%02X%02X", r, g, b);
+		// bg
+		r = mBgColor.getRed();
+		g = mBgColor.getGreen();
+		b = mBgColor.getBlue();
+		String bgHexString = String.format("#%02X%02X%02X", r, g, b);
+		
+		return new JSONObject()
+				.put(ThemeSettings.KEY_THEME_NAME, mName)
+				.put(ThemeSettings.KEY_FG_COLOR, fgHexString)
+				.put(ThemeSettings.KEY_BG_COLOR, bgHexString);
+	}
 }

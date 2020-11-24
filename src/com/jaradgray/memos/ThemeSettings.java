@@ -19,7 +19,7 @@ public class ThemeSettings {
 	// settings keys
 	public static final String KEY_FG_COLOR_TRANSIENT = "fg_color_transient";
 	public static final String KEY_BG_COLOR_TRANSIENT = "bg_color_transient";
-	public static final String KEY_CURRENT_THEME_NAME = "cur_theme_name";
+	public static final String KEY_CURRENT_THEME = "cur_theme";
 	
 	public static final String KEY_ALL_THEMES = "all_themes";
 	public static final String KEY_THEME_NAME = "theme_name";
@@ -42,14 +42,12 @@ public class ThemeSettings {
 		// Parse JSONObject
 		String fgColorString = obj.getString(KEY_FG_COLOR_TRANSIENT);
 		String bgColorString = obj.getString(KEY_BG_COLOR_TRANSIENT);
-		// current theme from all themes object
-		JSONObject allThemes = obj.getJSONObject(KEY_ALL_THEMES);
-		JSONObject themeObj = allThemes.getJSONObject(KEY_CURRENT_THEME_NAME);
+		JSONObject curThemeObj = obj.getJSONObject(KEY_CURRENT_THEME);
 		
 		// Set instance variables based on parsed data
 		mFgColorTransient = Color.decode(fgColorString);
 		mBgColorTransient = Color.decode(bgColorString);
-		mTheme = new Theme(themeObj);
+		mTheme = new Theme(curThemeObj);
 		
 		// TODO create fresh settings file or construct from defaults if there's an
 		//	error parsing the json, or if any key we're interested in doesn't exist
@@ -114,7 +112,7 @@ public class ThemeSettings {
 		String bgHexString = String.format("#%02X%02X%02X", r, g, b);
 		
 		return new JSONObject()
-				.put(KEY_CURRENT_THEME_NAME, mTheme.getName())
+				.put(KEY_CURRENT_THEME, mTheme.toJSONObject())
 				.put(KEY_FG_COLOR_TRANSIENT, fgHexString)
 				.put(KEY_BG_COLOR_TRANSIENT, bgHexString);
 	}
