@@ -54,6 +54,18 @@ public class ThemeSettings {
 	}
 	
 	/**
+	 * Constructs a ThemeSettings object based on given values
+	 * @param fgColorTransient
+	 * @param bgColorTransient
+	 * @param theme
+	 */
+	public ThemeSettings(Color fgColorTransient, Color bgColorTransient, Theme theme) {
+		mFgColorTransient = fgColorTransient;
+		mBgColorTransient = bgColorTransient;
+		mTheme = theme;
+	}
+	
+	/**
 	 * Constructs a new ThemeSettings with default values
 	 */
 	public ThemeSettings() {
@@ -67,6 +79,7 @@ public class ThemeSettings {
 	// Getters
 	public Color getFgColorTransient() { return mFgColorTransient; }
 	public Color getBgColorTransient() { return mBgColorTransient; }
+	public Theme getTheme() { return mTheme; }
 	
 	
 	// Static methods
