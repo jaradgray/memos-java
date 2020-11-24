@@ -207,7 +207,19 @@ public class EditorWindow extends JFrame {
 			}
 		});
 		
-		// TODO observe theme data
+		// Observe theme data
+		mSettingsVM.getThemeSettings().addObserver(new Observer() {
+			@Override
+			public void update(Observable o, Object arg) {
+				ThemeSettings ts = (ThemeSettings) arg;
+				
+				// Update text area based on transient fg and bg colors
+				mTextArea.setForeground(ts.getFgColorTransient());
+				mTextArea.setBackground(ts.getBgColorTransient());
+				
+				// TODO Update Format -> Theme menu based on all themes
+			}
+		});
 		
 		// Initialize component state from VM
 		EditorWindow.this.setTitle(mViewModel.getMemo().get().getFileName() + " - Memos");
@@ -268,9 +280,7 @@ public class EditorWindow extends JFrame {
 	}
 	
 	private void selectThemeColors() {
-		Color cachedFgColor = mSettingsVM.getThemeSettings().get().getFgColorTransient();
-		Color cachedBgColor = mSettingsVM.getThemeSettings().get().getBgColorTransient();
-		SelectColorsDialog scd = new SelectColorsDialog(this, "Edit Theme", true, cachedFgColor, cachedBgColor);
+		SelectColorsDialog scd = new SelectColorsDialog(this, "Edit Theme", true, mSettingsVM);
 		int result = scd.showDialog();
 		switch (result) {
 			case SelectColorsDialog.RESULT_OK:
