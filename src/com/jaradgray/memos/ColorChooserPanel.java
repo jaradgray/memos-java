@@ -2,6 +2,7 @@ package com.jaradgray.memos;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 
 import javax.swing.JColorChooser;
@@ -23,6 +24,7 @@ public class ColorChooserPanel extends JPanel {
 		previewLabel.setOpaque(true); // is this necessary?
 		previewLabel.setFont(new Font("SansSerif", Font.BOLD, 24));
 		previewLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		previewLabel.setPreferredSize(new Dimension(10, 50));
 		
 		// Set up ColorChooser
 		JColorChooser colorChooser = new JColorChooser(initialColor);
