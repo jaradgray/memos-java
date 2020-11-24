@@ -282,7 +282,7 @@ public class EditorWindow extends JFrame {
 	private void selectThemeColors() {
 		Color cachedFgColor = mSettingsVM.getThemeSettings().get().getFgColorTransient();
 		Color cachedBgColor = mSettingsVM.getThemeSettings().get().getBgColorTransient();
-		SelectColorsDialog scd = new SelectColorsDialog(this, "Edit Theme", true, mSettingsVM);
+		SelectColorsDialog scd = new SelectColorsDialog(this, "Select Theme Colors", true, mSettingsVM);
 		int result = scd.showDialog();
 		switch (result) {
 			case SelectColorsDialog.RESULT_OK:
