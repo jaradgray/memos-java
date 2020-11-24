@@ -66,7 +66,8 @@ public class ThemeSettings {
 	}
 	
 	
-	// Public methods
+	// Static methods
+	
 	/**
 	 * Returns a JSONObject containing one key-value pair, whose key is
 	 * {@link #KEY_ALL_THEMES} and whose value is an array of JSONObjects
@@ -89,5 +90,32 @@ public class ThemeSettings {
 		// Return a JSONObject containing all bundled Theme data
 		return new JSONObject()
 				.put(KEY_ALL_THEMES, themesList);
+	}
+	
+	
+	// Public methods
+	
+	/**
+	 * Returns this ThemeSettings object's data represented as a JSONObject
+	 * @return
+	 */
+	public JSONObject toJSONObject() {
+		// Convert Color members to hex Strings (e.g. "#FFFFFF")
+		int r, g, b;
+		// fg
+		r = mFgColorTransient.getRed();
+		g = mFgColorTransient.getGreen();
+		b = mFgColorTransient.getBlue();
+		String fgHexString = String.format("#%02X%02X%02X", r, g, b);
+		// bg
+		r = mBgColorTransient.getRed();
+		g = mBgColorTransient.getGreen();
+		b = mBgColorTransient.getBlue();
+		String bgHexString = String.format("#%02X%02X%02X", r, g, b);
+		
+		return new JSONObject()
+				.put(KEY_CURRENT_THEME_NAME, mTheme.getName())
+				.put(KEY_FG_COLOR_TRANSIENT, fgHexString)
+				.put(KEY_BG_COLOR_TRANSIENT, bgHexString);
 	}
 }
