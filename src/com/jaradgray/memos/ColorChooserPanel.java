@@ -40,6 +40,8 @@ public class ColorChooserPanel extends JPanel {
 		colorChooser.getSelectionModel().addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent e) {
+				// Update preview
+				previewLabel.setBackground(colorChooser.getColor());
 				// Notify listener
 				if (mListener != null) {
 					mListener.colorChanged(colorChooser.getColor());
