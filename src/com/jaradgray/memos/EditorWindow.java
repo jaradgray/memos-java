@@ -280,18 +280,21 @@ public class EditorWindow extends JFrame {
 	}
 	
 	private void selectThemeColors() {
+		Color cachedFgColor = mSettingsVM.getThemeSettings().get().getFgColorTransient();
+		Color cachedBgColor = mSettingsVM.getThemeSettings().get().getBgColorTransient();
 		SelectColorsDialog scd = new SelectColorsDialog(this, "Edit Theme", true, mSettingsVM);
 		int result = scd.showDialog();
 		switch (result) {
 			case SelectColorsDialog.RESULT_OK:
-				// TODO handle ok
-				System.out.println("Ok");
+				// "Keep changes" by doing nothing
 				break;
 			case SelectColorsDialog.RESULT_CANCEL:
-				// TODO handle cancel
-				System.out.println("Cancel");
+				// "Discard changes" by updating SettingVM's transient colors with cached colors
+				mSettingsVM.onFgColorTransientChanged(cachedFgColor);
+				mSettingsVM.onBgColorTransientChanged(cachedBgColor);
 				break;
 			default:
+				System.err.println("selectThemeColors(): unrecognized dialog result [" + result + "]");
 				break;
 		}
 	}
