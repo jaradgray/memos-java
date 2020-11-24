@@ -145,6 +145,9 @@ public class EditorWindow extends JFrame {
 		// font
 		FontSettings fontSettings = mSettingsVM.getFontSettings().get();
 		mTextArea.setFont(fontSettings.getFont());
+		// theme transient colors
+		mTextArea.setForeground(mSettingsVM.getThemeSettings().get().getFgColorTransient());
+		mTextArea.setBackground(mSettingsVM.getThemeSettings().get().getBgColorTransient());
 		
 		// Listen for window events
 		this.addWindowListener(new WindowAdapter() {
