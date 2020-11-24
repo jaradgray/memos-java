@@ -26,6 +26,7 @@ public class ColorChooserPanel extends JPanel {
 		
 		// Set up ColorChooser
 		JColorChooser colorChooser = new JColorChooser(initialColor);
+		colorChooser.setPreviewPanel(new JPanel()); // remove default preview panel
 		
 		// Add components
 		this.add(previewLabel, BorderLayout.CENTER);
