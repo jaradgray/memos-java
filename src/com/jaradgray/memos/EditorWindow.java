@@ -1,8 +1,8 @@
 package com.jaradgray.memos;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Container;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -268,7 +268,9 @@ public class EditorWindow extends JFrame {
 	}
 	
 	private void selectThemeColors() {
-		SelectColorsDialog scd = new SelectColorsDialog(this, "Edit Theme", true, mSettingsVM);
+		Color cachedFgColor = mSettingsVM.getThemeSettings().get().getFgColorTransient();
+		Color cachedBgColor = mSettingsVM.getThemeSettings().get().getBgColorTransient();
+		SelectColorsDialog scd = new SelectColorsDialog(this, "Edit Theme", true, cachedFgColor, cachedBgColor);
 		int result = scd.showDialog();
 		switch (result) {
 			case SelectColorsDialog.RESULT_OK:

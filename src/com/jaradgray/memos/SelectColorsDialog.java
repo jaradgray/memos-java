@@ -30,7 +30,7 @@ public class SelectColorsDialog extends JDialog {
 	private int mDialogResult = -1;
 	
 	// Constructor
-	public SelectColorsDialog(Frame owner, String title, boolean modal, SettingsViewModel vm) {
+	public SelectColorsDialog(Frame owner, String title, boolean modal, Color fgColor, Color bgColor) {
 		super(owner, title, modal);
 		
 		// Set this Dialog's layout
@@ -43,7 +43,7 @@ public class SelectColorsDialog extends JDialog {
 		mainPanel = new JPanel();
 		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.PAGE_AXIS));
 		
-		fgChooser = new ColorChooserPanel(vm.getThemeSettings().get().getFgColorTransient(), "Foreground");
+		fgChooser = new ColorChooserPanel(fgColor, "Foreground");
 		fgChooser.setAlignmentX(JComponent.RIGHT_ALIGNMENT);
 		fgChooser.setListener(new ColorChooserListener() {
 			@Override
@@ -54,7 +54,7 @@ public class SelectColorsDialog extends JDialog {
 			}
 		});
 
-		bgChooser = new ColorChooserPanel(vm.getThemeSettings().get().getBgColorTransient(), "Background");
+		bgChooser = new ColorChooserPanel(bgColor, "Background");
 		bgChooser.setAlignmentX(JComponent.RIGHT_ALIGNMENT);
 		bgChooser.setListener(new ColorChooserListener() {
 			@Override
