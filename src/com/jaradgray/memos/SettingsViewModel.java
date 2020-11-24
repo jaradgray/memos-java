@@ -89,10 +89,15 @@ public class SettingsViewModel {
 	
 	public void onThemeSelected(Theme theme) {
 		// Update ThemeSettings based on given Theme
-		mThemeSettings.set(new ThemeSettings(
+		ThemeSettings ts = new ThemeSettings(
 				theme.getFgColor(),
 				theme.getBgColor(),
-				theme));
+				theme);
+		mThemeSettings.set(ts);
+		
+		// Update settings file
+		JSONObject obj = ts.toJSONObject();
+		SettingsUtils.updateSettingsFile(obj);
 	}
 	
 	
