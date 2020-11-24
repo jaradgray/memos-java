@@ -87,6 +87,14 @@ public class SettingsViewModel {
 		mThemeSettings.set(ts);
 	}
 	
+	public void onThemeSelected(Theme theme) {
+		// Update ThemeSettings based on given Theme
+		mThemeSettings.set(new ThemeSettings(
+				theme.getFgColor(),
+				theme.getBgColor(),
+				theme));
+	}
+	
 	
 	// Private methods
 }

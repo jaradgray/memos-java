@@ -129,7 +129,9 @@ public class EditorWindow extends JFrame {
 				mTextArea.setForeground(ts.getFgColorTransient());
 				mTextArea.setBackground(ts.getBgColorTransient());
 				
-				// TODO Update Format -> Theme menu based on all themes
+				// Note: we don't need to rebuild the menu here to indicate
+				//	the current Theme, because the JRadioButtonMenuItem
+				//	mechanism indicates the last-clicked item internally
 			}
 		});
 		
@@ -247,6 +249,13 @@ public class EditorWindow extends JFrame {
 			if (t.getName().equals(curThemeName)) {
 				rbMenuItem.setSelected(true);
 			}
+			// listen for clicks
+			rbMenuItem.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent arg0) {
+					mSettingsVM.onThemeSelected(t);
+				}
+			});
 			group.add(rbMenuItem);
 			themeMenu.add(rbMenuItem);
 		}
