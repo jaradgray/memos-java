@@ -49,9 +49,8 @@ public class SelectColorsDialog extends JDialog {
 		fgChooser.setListener(new ColorChooserListener() {
 			@Override
 			public void colorChanged(Color c) {
-				// TODO Notify SettingsVM
-//				vm.onFgColorTransientChanged(c);
-				System.out.println("color changed to " + c);
+				// Notify SettingsVM
+				vm.onFgColorTransientChanged(c);
 			}
 		});
 
@@ -61,9 +60,8 @@ public class SelectColorsDialog extends JDialog {
 		bgChooser.setListener(new ColorChooserListener() {
 			@Override
 			public void colorChanged(Color c) {
-				// TODO Notify SettingsVM
-//				vm.onBgColorTransientChanged(c);
-				System.out.println("color changed to " + c);
+				// Notify SettingsVM
+				vm.onBgColorTransientChanged(c);
 			}
 		});
 		
