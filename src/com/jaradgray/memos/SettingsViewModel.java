@@ -16,6 +16,7 @@ public class SettingsViewModel {
 	// Instance variables
 	private MutableObservableObject<WindowSettings> mWindowSettings = new MutableObservableObject<>();
 	private MutableObservableObject<FontSettings> mFontSettings = new MutableObservableObject<>();
+	private MutableObservableObject<ThemeSettings> mThemeSettings = new MutableObservableObject<>();
 	
 	// Constructor
 	public SettingsViewModel() {		
@@ -27,12 +28,14 @@ public class SettingsViewModel {
 		String json = SettingsUtils.getTextFromFile(settingsFile);
 		mWindowSettings.set(new WindowSettings(json));
 		mFontSettings.set(new FontSettings(json));
+		mThemeSettings.set(new ThemeSettings(json));
 	}
 	
 	
 	// Getters
 	public ObservableObject<WindowSettings> getWindowSettings() { return mWindowSettings; }
 	public ObservableObject<FontSettings> getFontSettings() { return mFontSettings; }
+	public ObservableObject<ThemeSettings> getThemeSettings() { return mThemeSettings; }
 	
 	
 	// Public methods

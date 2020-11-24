@@ -64,6 +64,11 @@ public class ThemeSettings {
 	}
 	
 	
+	// Getters
+	public Color getFgColorTransient() { return mFgColorTransient; }
+	public Color getBgColorTransient() { return mBgColorTransient; }
+	
+	
 	// Static methods
 	
 	/**

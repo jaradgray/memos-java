@@ -122,10 +122,21 @@ public class SelectColorsDialog extends JDialog {
 		// Create Swing components
 		
 		// TODO observe ViewModel's data
+		vm.getThemeSettings().addObserver(new Observer() {
+			@Override
+			public void update(Observable arg0, Object o) {
+				ThemeSettings ts = (ThemeSettings) o;
+				// we're observing the entire ThemeSettings object
+				// 	all we need to do is set colors based on transient colors
+				fgColorPreviewPanel.setBackground(ts.getFgColorTransient());
+				bgColorPreviewPanel.setBackground(ts.getBgColorTransient());
+			}
+		});
 		
 		// TODO Initialize View data to vm's state
-//		fgColorPanel.setBackground(vm.getFgColorTransient().get());
-//		bgColorPanel.setBackground(vm.getBgColorTransient().get());
+		ThemeSettings ts = vm.getThemeSettings().get();
+		fgColorPreviewPanel.setBackground(ts.getFgColorTransient());
+		bgColorPreviewPanel.setBackground(ts.getBgColorTransient());
 		
 		// Add components to this JDialog's content pane
 		this.getContentPane().add(mainPanel, BorderLayout.CENTER);
