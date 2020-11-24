@@ -24,6 +24,10 @@ public class SettingsUtils {
 		// Create default *Settings objects and get their JSONObject representations
 		JSONObject windowSettingsObj = new WindowSettings().toJSONObject();
 		JSONObject fontSettingsObj = new FontSettings().toJSONObject();
+		JSONObject themeSettingsObj = new ThemeSettings().toJSONObject();
+		
+		// Get bundled theme data as a JSONObject
+		JSONObject bundledThemesObj = ThemeSettings.getBundledThemesJSONObject();
 		
 		// Merge all settings JSONObjects into a single JSONObject
 		JSONObject merged = new JSONObject();
@@ -32,6 +36,12 @@ public class SettingsUtils {
 		}
 		for (String key : JSONObject.getNames(fontSettingsObj)) {
 			merged.put(key, fontSettingsObj.get(key));
+		}
+		for (String key : JSONObject.getNames(themeSettingsObj)) {
+			merged.put(key, themeSettingsObj.get(key));
+		}
+		for (String key : JSONObject.getNames(bundledThemesObj)) {
+			merged.put(key, bundledThemesObj.get(key));
 		}
 		
 		// Write merged JSONObject to settings file
