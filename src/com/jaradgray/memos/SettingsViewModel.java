@@ -1,12 +1,9 @@
 package com.jaradgray.memos;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.util.Iterator;
 
-import org.apache.commons.io.FileUtils;
 import org.json.JSONObject;
 
 import com.jaradgray.observable.MutableObservableObject;
@@ -53,6 +50,24 @@ public class SettingsViewModel {
 		// Update settings file with new font values
 		JSONObject obj = mFontSettings.get().toJSONObject();
 		SettingsUtils.updateSettingsFile(obj);
+	}
+	
+	public void onFgColorTransientChanged(Color color) {
+		// Create new ThemeSettings object with given fg transient color and update member
+		ThemeSettings ts = new ThemeSettings(
+				color,
+				mThemeSettings.get().getBgColorTransient(),
+				mThemeSettings.get().getTheme());
+		mThemeSettings.set(ts);
+	}
+	
+	public void onBgColorTransientChanged(Color color) {
+		// Create new ThemeSettings object with given bg transient color and update member
+		ThemeSettings ts = new ThemeSettings(
+				mThemeSettings.get().getFgColorTransient(),
+				color,
+				mThemeSettings.get().getTheme());
+		mThemeSettings.set(ts);
 	}
 	
 	

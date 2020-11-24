@@ -58,7 +58,8 @@ public class SelectColorsDialog extends JDialog {
 				if (c == null) {
 					return;
 				}
-				fgColorPreviewPanel.setBackground(c);
+				// Notify SettingsVM
+				vm.onFgColorTransientChanged(c);
 			}
 		});
 		fgColorPanel.add(fgColorPreviewPanel);
@@ -83,7 +84,8 @@ public class SelectColorsDialog extends JDialog {
 				if (c == null) {
 					return;
 				}
-				bgColorPreviewPanel.setBackground(c);
+				// Notify SettingsVM
+				vm.onBgColorTransientChanged(c);
 			}
 		});
 		bgColorPanel.add(bgColorPreviewPanel);
