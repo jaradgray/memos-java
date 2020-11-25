@@ -100,6 +100,14 @@ public class SettingsViewModel {
 		SettingsUtils.updateSettingsFile(obj);
 	}
 	
+	public void onThemeSaved(String name) {
+		// Add a new Theme to the "all_themes" array in the settings file
+		Color fg = mThemeSettings.get().getFgColorTransient();
+		Color bg = mThemeSettings.get().getBgColorTransient();
+		Theme t = new Theme(name, fg, bg);
+		SettingsUtils.addTheme(t);
+	}
+	
 	
 	// Private methods
 }

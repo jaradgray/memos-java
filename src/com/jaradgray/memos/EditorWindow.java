@@ -336,8 +336,9 @@ public class EditorWindow extends JFrame {
 	
 	private void saveCurrentTheme() {
 		SaveThemeDialog dialog = new SaveThemeDialog(this, "Save Theme", true);
-		if (dialog.showDialog() == SaveThemeDialog.RESULT_SAVE) {
-			System.out.println("Save current theme as: " + dialog.getText());
+		if (dialog.showDialog() == SaveThemeDialog.RESULT_SAVE) {			
+			// Notify SettingsVM
+			mSettingsVM.onThemeSaved(dialog.getText());
 		}
 	}
 }

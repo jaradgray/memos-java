@@ -6,6 +6,7 @@ import java.nio.file.Files;
 import java.util.Iterator;
 
 import org.apache.commons.io.FileUtils;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
@@ -81,6 +82,28 @@ public class SettingsUtils {
 		}
 		// Write settingsJsonObj to settings file
 		writeSettingsFile(settingsJsonObj.toString());
+	}
+	
+	/**
+	 * Given a Theme, adds its JSON representation to the "all_themes" array in
+	 * the app's local settings file
+	 * 
+	 * Note: assumes settings file exists, is formatted correctly, and contains
+	 * 	the "all_themes" key-value pair
+	 * @param t
+	 */
+	public static void addTheme(Theme t) {		
+		// Get settings file data
+		File settingsFile = new File(SETTINGS_FILE_PATH);
+		JSONObject settingsJsonObj = new JSONObject(getTextFromFile(settingsFile));
+		// Get the all_themes array
+		JSONArray allThemesArr = settingsJsonObj.getJSONArray(ThemeSettings.KEY_ALL_THEMES);
+		// Add the given Theme to it
+		allThemesArr.put(t.toJSONObject());
+		// Call updateSettingsFile, passing the updated array as a JSONObject
+		JSONObject allThemesObj = new JSONObject()
+				.put(ThemeSettings.KEY_ALL_THEMES, allThemesArr);
+		updateSettingsFile(allThemesObj);
 	}
 	
 	
