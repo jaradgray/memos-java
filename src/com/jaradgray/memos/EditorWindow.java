@@ -13,6 +13,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 import javax.swing.ButtonGroup;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -180,9 +181,14 @@ public class EditorWindow extends JFrame {
 					
 					// Handle dialog result
 					if (dialogResult == JOptionPane.YES_OPTION) {
-						save();
+						// Save changes
+						int saveResult = save();
+						// Don't exit app if user cancelled the "Save as..." operation
+						if (saveResult == JFileChooser.CANCEL_OPTION) {
+							return; // stop short, don't exit app
+						}
 					} else if (dialogResult == JOptionPane.CANCEL_OPTION) {
-						return;
+						return; // stop short, don't exit app
 					}
 				}
 				
@@ -330,14 +336,14 @@ public class EditorWindow extends JFrame {
 		return menuBar;
 	}
 	
-	private void save() {
+	private int save() {
 		System.out.println("Save MenuItem selected: " + mTextArea.getText());
-		mViewModel.saveChanges(mTextArea.getText());
+		return mViewModel.saveChanges(mTextArea.getText());
 	}
 	
-	private void saveAs() {
+	private int saveAs() {
 		System.out.println("Save As... MenuItem selected");
-		mViewModel.saveChangesAs(mTextArea.getText());
+		return mViewModel.saveChangesAs(mTextArea.getText());
 	}
 	
 	/** Closes this window via WindowEvent, as if the user clicked the "X" */
