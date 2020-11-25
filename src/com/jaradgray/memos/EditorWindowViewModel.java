@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 
 import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import com.jaradgray.observable.MutableObservableObject;
 import com.jaradgray.observable.ObservableObject;
@@ -77,6 +78,8 @@ public class EditorWindowViewModel {
 		// Show a "Save as" dialog, save file
 		// create and show a file chooser
 		final JFileChooser fc = new JFileChooser();
+		FileNameExtensionFilter filter = new FileNameExtensionFilter("Text Documents (*.txt)", "txt");
+		fc.setFileFilter(filter);
 		int result = fc.showSaveDialog(mComponent); 
 		if (result == JFileChooser.APPROVE_OPTION) {
 			File file = fc.getSelectedFile();
