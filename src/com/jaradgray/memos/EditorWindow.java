@@ -19,7 +19,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
-import javax.swing.JRadioButtonMenuItem;
+import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.KeyStroke;
@@ -225,7 +225,7 @@ public class EditorWindow extends JFrame {
 		JMenuBar menuBar;
 		JMenu fileMenu, editMenu, formatMenu, themeMenu;
 		JMenuItem menuItem; // just need one JMenuItem according to the docs
-		JRadioButtonMenuItem rbMenuItem;
+//		JRadioButton radioButton;
 		
 		menuBar = new JMenuBar();
 		
@@ -295,20 +295,20 @@ public class EditorWindow extends JFrame {
 		List<Theme> allThemes = mSettingsVM.getAllThemes().get();
 		ButtonGroup group = new ButtonGroup();
 		for (Theme t : allThemes) {
-			rbMenuItem = new JRadioButtonMenuItem(t.getName());
+			final JRadioButton radioButton = new JRadioButton(t.getName());
 			// indicate current Theme
 			if (t.getName().equals(curThemeName)) {
-				rbMenuItem.setSelected(true);
+				radioButton.setSelected(true);
 			}
 			// listen for clicks
-			rbMenuItem.addActionListener(new ActionListener() {
+			radioButton.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent arg0) {
 					mSettingsVM.onThemeSelected(t);
 				}
 			});
-			group.add(rbMenuItem);
-			themeMenu.add(rbMenuItem);
+			group.add(radioButton);
+			themeMenu.add(radioButton);
 		}
 		
 		themeMenu.addSeparator();
