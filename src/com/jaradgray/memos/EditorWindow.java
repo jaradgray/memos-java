@@ -6,6 +6,8 @@ import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.List;
@@ -300,11 +302,36 @@ public class EditorWindow extends JFrame {
 			if (t.getName().equals(curThemeName)) {
 				radioButton.setSelected(true);
 			}
-			// listen for clicks
-			radioButton.addActionListener(new ActionListener() {
+			// listen for mouse events
+			radioButton.addMouseListener(new MouseAdapter() {
 				@Override
-				public void actionPerformed(ActionEvent arg0) {
-					mSettingsVM.onThemeSelected(t);
+				public void mouseClicked(MouseEvent e) {
+					System.out.println("mouse clicked");
+				}
+				@Override
+				public void mouseEntered(MouseEvent e) {
+					radioButton.setBackground(Color.red);
+				}
+				@Override
+				public void mouseExited(MouseEvent e) {
+					radioButton.setBackground(themeMenu.getBackground());
+				}
+				@Override
+				public void mousePressed(MouseEvent e) {
+					System.out.println("mouse pressed");
+				}
+				@Override
+				public void mouseReleased(MouseEvent e) {
+					System.out.println("mouse released: " + e.getButton());
+					switch (e.getButton()) {
+						case MouseEvent.BUTTON1:
+							mSettingsVM.onThemeSelected(t);
+							break;
+						case MouseEvent.BUTTON3:
+							// TODO show popup menu
+							System.out.println("show popup");
+							break;
+					}
 				}
 			});
 			group.add(radioButton);
