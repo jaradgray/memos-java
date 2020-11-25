@@ -100,6 +100,26 @@ public class SettingsViewModel {
 		SettingsUtils.updateSettingsFile(obj);
 	}
 	
+	public void onThemeSaved(String name) {
+		// Create a new Theme object from the given name and the current fg & bg transient colors
+		Color fg = mThemeSettings.get().getFgColorTransient();
+		Color bg = mThemeSettings.get().getBgColorTransient();
+		Theme t = new Theme(name, fg, bg);
+		
+		// Update settings file
+		// add theme to "all_themes" array in settings file
+		SettingsUtils.addTheme(t);
+		// update affected properties in settings file
+		SettingsUtils.setCurrentTheme(t);
+		SettingsUtils.setFgColorTransient(fg);
+		SettingsUtils.setBgColorTransient(bg);
+		
+		// Update ThemeSettings to make the newly created Theme be the current Theme
+		mThemeSettings.set(new ThemeSettings(fg, bg, t));
+		// Update mAllThemes
+		mAllThemes.set(SettingsUtils.getAllThemes());
+	}
+	
 	
 	// Private methods
 }

@@ -1,11 +1,15 @@
 package com.jaradgray.memos;
 
+import java.awt.Color;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import org.apache.commons.io.FileUtils;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
@@ -81,6 +85,98 @@ public class SettingsUtils {
 		}
 		// Write settingsJsonObj to settings file
 		writeSettingsFile(settingsJsonObj.toString());
+	}
+	
+	/**
+	 * Given a Theme, adds its JSON representation to the "all_themes" array in
+	 * the app's local settings file
+	 * 
+	 * Note: assumes settings file exists, is formatted correctly, and contains
+	 * 	the "all_themes" key-value pair
+	 * @param t
+	 */
+	public static void addTheme(Theme t) {		
+		// Get settings file data
+		File settingsFile = new File(SETTINGS_FILE_PATH);
+		JSONObject settingsJsonObj = new JSONObject(getTextFromFile(settingsFile));
+		// Get the all_themes array
+		JSONArray allThemesArr = settingsJsonObj.getJSONArray(ThemeSettings.KEY_ALL_THEMES);
+		// Add the given Theme to it
+		allThemesArr.put(t.toJSONObject());
+		// Call updateSettingsFile, passing the updated array as a JSONObject
+		JSONObject allThemesObj = new JSONObject()
+				.put(ThemeSettings.KEY_ALL_THEMES, allThemesArr);
+		updateSettingsFile(allThemesObj);
+	}
+	
+	/**
+	 * Sets the "cur_theme" property in the app's local settings
+	 * file to the JSON representation of the given Theme
+	 * @param theme
+	 */
+	public static void setCurrentTheme(Theme theme) {		
+		// Set "cur_theme" property
+		updateSettingsFile(new JSONObject()
+				.put(ThemeSettings.KEY_CURRENT_THEME, theme.toJSONObject()));
+	}
+	
+	/**
+	 * Sets the "fg_color_transient" property in the app's local settings
+	 * file to the hex String representation of the given Color
+	 * @param c
+	 */
+	public static void setFgColorTransient(Color c) {		
+		// Convert Color to hex String (e.g. "#FFFFFF")
+		int r, g, b;
+		r = c.getRed();
+		g = c.getGreen();
+		b = c.getBlue();
+		String colorString = String.format("#%02X%02X%02X", r, g, b);
+		
+		// Set "fg_color_transient" property
+		updateSettingsFile(new JSONObject()
+				.put(ThemeSettings.KEY_FG_COLOR_TRANSIENT, colorString));
+	}
+	
+	/**
+	 * Sets the "bg_color_transient" property in the app's local settings
+	 * file to the hex String representation of the given Color
+	 * @param c
+	 */
+	public static void setBgColorTransient(Color c) {		
+		// Convert Color to hex String (e.g. "#FFFFFF")
+		int r, g, b;
+		r = c.getRed();
+		g = c.getGreen();
+		b = c.getBlue();
+		String colorString = String.format("#%02X%02X%02X", r, g, b);
+		
+		// Set "fg_color_transient" property
+		updateSettingsFile(new JSONObject()
+				.put(ThemeSettings.KEY_BG_COLOR_TRANSIENT, colorString));
+	}
+	
+	/**
+	 * Returns a List<Theme> object representing the "all_themes" array in the
+	 * app's local settings file
+	 * @return
+	 */
+	public static List<Theme> getAllThemes() {
+		// Get settings file data
+		File settingsFile = new File(SETTINGS_FILE_PATH);
+		JSONObject settingsJsonObj = new JSONObject(getTextFromFile(settingsFile));
+		// Get the all_themes array
+		JSONArray allThemesArr = settingsJsonObj.getJSONArray(ThemeSettings.KEY_ALL_THEMES);
+		
+		// Build the list
+		List<Theme> result = new ArrayList<>();
+		for (Object o : allThemesArr) {
+			if (o instanceof JSONObject) {
+				result.add(new Theme((JSONObject) o));
+			}
+		}
+		
+		return result;
 	}
 	
 	

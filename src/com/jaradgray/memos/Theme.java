@@ -26,6 +26,18 @@ public class Theme {
 	}
 	
 	/**
+	 * Constructs a Theme object based on given values
+	 * @param name
+	 * @param fgColor
+	 * @param bgColor
+	 */
+	public Theme(String name, Color fgColor, Color bgColor) {
+		mName = name;
+		mFgColor = fgColor;
+		mBgColor = bgColor;
+	}
+	
+	/**
 	 * Constructs a Theme object with default values
 	 */
 	public Theme() {

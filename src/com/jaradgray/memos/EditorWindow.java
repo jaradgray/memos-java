@@ -134,6 +134,15 @@ public class EditorWindow extends JFrame {
 				//	mechanism indicates the last-clicked item internally
 			}
 		});
+		// the list of all Themes
+		mSettingsVM.getAllThemes().addObserver(new Observer() {
+			@Override
+			public void update(Observable o, Object arg) {
+				// Rebuild and revalidate this window's JMenuBar
+				setJMenuBar(buildMenuBar());
+				getJMenuBar().revalidate(); // revalidate for dynamic changes
+			}
+		});
 		
 		// Initialize component state from VM
 		EditorWindow.this.setTitle(mViewModel.getMemo().get().getFileName() + " - Memos");
@@ -335,6 +344,10 @@ public class EditorWindow extends JFrame {
 	}
 	
 	private void saveCurrentTheme() {
-		System.out.println("Save current theme");
+		SaveThemeDialog dialog = new SaveThemeDialog(this, "Save Theme", true);
+		if (dialog.showDialog() == SaveThemeDialog.RESULT_SAVE) {			
+			// Notify SettingsVM
+			mSettingsVM.onThemeSaved(dialog.getText());
+		}
 	}
 }
