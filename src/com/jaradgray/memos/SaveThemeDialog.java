@@ -21,6 +21,7 @@ public class SaveThemeDialog extends JDialog {
 
 	// Instance variables
 	private int mDialogResult = -1;
+	private String mText;
 	
 	// Constructor
 	public SaveThemeDialog(Frame owner, String title, boolean modal) {
@@ -52,12 +53,14 @@ public class SaveThemeDialog extends JDialog {
 		saveButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
+				// "Show" error label if text field is empty
 				if (nameTextField.getText().equals("")) {
-					errorLabel.setForeground(Color.red); // "show" error label
+					errorLabel.setForeground(Color.red);
 					return;
 				}
-				// Set dialog result, hide and close this dialog
+				// Set members, hide and close this dialog
 				mDialogResult = RESULT_SAVE;
+				mText = nameTextField.getText();
 				SaveThemeDialog.this.setVisible(false);
 				SaveThemeDialog.this.dispose();
 			}
@@ -82,6 +85,9 @@ public class SaveThemeDialog extends JDialog {
 		this.getContentPane().add(mainPanel, BorderLayout.CENTER);
 		this.pack();
 	}
+	
+	// Getters
+	public String getText() { return mText; }
 	
 	// Public methods
 	/**
