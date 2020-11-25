@@ -86,23 +86,35 @@ public class EditorWindowViewModel {
 			File file = fc.getSelectedFile();
 			
 			// Prompt for confirmation if selected file exists
-			int confirmResult = JOptionPane.showOptionDialog(
-					mComponent,
-				    file.getName() + " already exists.\nDo you want to replace it?",
-		    	    "Confirm Save As",
-		    	    JOptionPane.YES_NO_OPTION,
-		    	    JOptionPane.WARNING_MESSAGE,
-		    	    null,
-		    	    new Object[] {"Yes", "No"},
-		    	    "No");
+			boolean doWrite = true;
+			if (file.exists()) {
+				// Show a confirmation dialog
+				int confirmResult = JOptionPane.showOptionDialog(
+						mComponent,
+					    file.getName() + " already exists.\nDo you want to replace it?",
+			    	    "Confirm Save As",
+			    	    JOptionPane.YES_NO_OPTION,
+			    	    JOptionPane.WARNING_MESSAGE,
+			    	    null,
+			    	    new Object[] {"Yes", "No"},
+			    	    "No");
+				
+				// Handle dialog result
+				if (confirmResult != JOptionPane.YES_OPTION) {
+					doWrite = false;
+					result = JFileChooser.CANCEL_OPTION;
+				}
+				
+				// TODO keep FileChooser open during the confirmation process.
+				//	code probably won't go here, but somewhere around here
+			}
 			
-			if (confirmResult == JOptionPane.YES_OPTION) {			
+			// Proceed with the writing if we should
+			if (doWrite) {
 				// Write newText to selected file
 				writeTextFile(file.getAbsolutePath(), newText);
 				// Update mMemo
 				mMemo.set(new MemoFile(file.getAbsolutePath(), newText));
-			} else {
-				result = JFileChooser.CANCEL_OPTION;
 			}
 		}
 		
