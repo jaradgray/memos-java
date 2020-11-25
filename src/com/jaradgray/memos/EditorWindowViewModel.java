@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import com.jaradgray.observable.MutableObservableObject;
@@ -84,13 +85,25 @@ public class EditorWindowViewModel {
 		if (result == JFileChooser.APPROVE_OPTION) {
 			File file = fc.getSelectedFile();
 			
-			// TODO prompt for confirmation if selected file exists
+			// Prompt for confirmation if selected file exists
+			int confirmResult = JOptionPane.showOptionDialog(
+					mComponent,
+				    file.getName() + " already exists.\nDo you want to replace it?",
+		    	    "Confirm Save As",
+		    	    JOptionPane.YES_NO_OPTION,
+		    	    JOptionPane.WARNING_MESSAGE,
+		    	    null,
+		    	    new Object[] {"Yes", "No"},
+		    	    "No");
 			
-			// Write newText to selected file
-			writeTextFile(file.getAbsolutePath(), newText);
-			
-			// Update mMemo
-			mMemo.set(new MemoFile(file.getAbsolutePath(), newText));
+			if (confirmResult == JOptionPane.YES_OPTION) {			
+				// Write newText to selected file
+				writeTextFile(file.getAbsolutePath(), newText);
+				// Update mMemo
+				mMemo.set(new MemoFile(file.getAbsolutePath(), newText));
+			} else {
+				result = JFileChooser.CANCEL_OPTION;
+			}
 		}
 		
 		return result;
