@@ -17,6 +17,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -34,6 +35,8 @@ public class EditorWindow extends JFrame {
 	// Constructor
 	public EditorWindow(String title) {
 		super(title);
+		
+		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		
 		// Set layout manager
 		setLayout(new BorderLayout());
@@ -162,12 +165,41 @@ public class EditorWindow extends JFrame {
 		this.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
+				// Prompt user if there are unsaved changes
+				if (!mViewModel.getIsMemoTextSynced().get()) {
+					// Show dialog
+					int dialogResult = JOptionPane.showOptionDialog(
+							EditorWindow.this,
+							"Do you want to save changes to " + mViewModel.getMemo().get().getFileName() + "?",
+							"Memos",
+							JOptionPane.YES_NO_CANCEL_OPTION,
+							JOptionPane.PLAIN_MESSAGE,
+							null,
+							new Object[] {"Save", "Don't save", "Cancel"},
+							"Save");
+					
+					// Handle dialog result
+					switch (dialogResult) {
+						case JOptionPane.YES_OPTION:
+							save();
+							break;
+						case JOptionPane.NO_OPTION:
+							break;
+						case JOptionPane.CANCEL_OPTION:
+							return; // don't exit the app
+					}
+				}
+				
 				// Give SettingsViewModel current window info
 				mSettingsVM.onWindowClosing(
 						EditorWindow.this.getX(),
 						EditorWindow.this.getY(),
 						EditorWindow.this.getWidth(),
 						EditorWindow.this.getHeight());
+				
+				// Close the application manually
+				EditorWindow.this.dispose();
+				System.exit(0);
 			}
 		});
 		
@@ -178,6 +210,11 @@ public class EditorWindow extends JFrame {
 		Container c = getContentPane();
 		c.add(scrollPane, BorderLayout.CENTER);
 	}
+	
+	
+	// Events
+	
+	
 	
 	
 	// Private methods
