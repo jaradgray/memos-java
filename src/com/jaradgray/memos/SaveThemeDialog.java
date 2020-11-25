@@ -42,7 +42,7 @@ public class SaveThemeDialog extends JDialog {
 		namePanel.add(nameTextField);
 		
 		JLabel errorLabel = new JLabel("Please enter a theme name");
-		errorLabel.setForeground(Color.red);
+		errorLabel.setForeground(errorLabel.getBackground()); // "hide" error label
 		
 		buttonsPanel = new JPanel();
 		buttonsPanel.setLayout(new BoxLayout(buttonsPanel, BoxLayout.LINE_AXIS));
@@ -52,6 +52,10 @@ public class SaveThemeDialog extends JDialog {
 		saveButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
+				if (nameTextField.getText().equals("")) {
+					errorLabel.setForeground(Color.red); // "show" error label
+					return;
+				}
 				// Set dialog result, hide and close this dialog
 				mDialogResult = RESULT_SAVE;
 				SaveThemeDialog.this.setVisible(false);
