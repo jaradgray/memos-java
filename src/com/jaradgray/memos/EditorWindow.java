@@ -179,14 +179,10 @@ public class EditorWindow extends JFrame {
 							"Save");
 					
 					// Handle dialog result
-					switch (dialogResult) {
-						case JOptionPane.YES_OPTION:
-							save();
-							break;
-						case JOptionPane.NO_OPTION:
-							break;
-						case JOptionPane.CANCEL_OPTION:
-							return; // don't exit the app
+					if (dialogResult == JOptionPane.YES_OPTION) {
+						save();
+					} else if (dialogResult == JOptionPane.CANCEL_OPTION) {
+						return;
 					}
 				}
 				
