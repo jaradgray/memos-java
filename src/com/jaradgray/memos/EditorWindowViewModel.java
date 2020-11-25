@@ -39,14 +39,20 @@ public class EditorWindowViewModel {
 		mIsMemoTextSynced.set(isSynced);
 	}
 	
-	public void saveChanges(String newText) {
+	/**
+	 * 
+	 * @param newText
+	 * @return
+	 * 			JFileChooser.APPROVE_OPTION if the given String was saved
+	 * 			JFileChooser.CANCEL_OPTION otherwise
+	 */
+	public int saveChanges(String newText) {
 		if (newText.equals(mMemo.get().getText())) {
-			return;
+			return JFileChooser.CANCEL_OPTION;
 		}
 		// If our memo doesn't have a file path, save as instead of save
 		if (mMemo.get().getFilePath() == null || mMemo.get().getFilePath().equals("")) {
-			saveChangesAs(newText);
-			return;
+			return saveChangesAs(newText);
 		}
 		
 		// Write changes to file
@@ -55,13 +61,24 @@ public class EditorWindowViewModel {
 		
 		// Update mMemo
 		mMemo.set(new MemoFile(path, newText));
+		
+		return JFileChooser.APPROVE_OPTION;
 	}
 	
-	public void saveChangesAs(String newText) {		
+	/**
+	 * Shows a "Save as..." dialog.
+	 * If a file is selected, saves newText to selected file and updates Memo member
+	 * @param newText
+	 * @return
+	 * 			JFileChooser.APPROVE_OPTION if newText was saved to a file
+	 * 			JFileChooser.CANCEL_OPTION if the user cancelled the "Save as..." dialog
+	 */
+	public int saveChangesAs(String newText) {		
 		// Show a "Save as" dialog, save file
 		// create and show a file chooser
 		final JFileChooser fc = new JFileChooser();
-		if (fc.showSaveDialog(mComponent) == JFileChooser.APPROVE_OPTION) {
+		int result = fc.showSaveDialog(mComponent); 
+		if (result == JFileChooser.APPROVE_OPTION) {
 			File file = fc.getSelectedFile();
 			
 			// TODO prompt for confirmation if selected file exists
@@ -72,6 +89,8 @@ public class EditorWindowViewModel {
 			// Update mMemo
 			mMemo.set(new MemoFile(file.getAbsolutePath(), newText));
 		}
+		
+		return result;
 	}
 	
 	

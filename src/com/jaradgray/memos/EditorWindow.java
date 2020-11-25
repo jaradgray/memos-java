@@ -13,10 +13,12 @@ import java.util.Observable;
 import java.util.Observer;
 
 import javax.swing.ButtonGroup;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -34,6 +36,8 @@ public class EditorWindow extends JFrame {
 	// Constructor
 	public EditorWindow(String title) {
 		super(title);
+		
+		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		
 		// Set layout manager
 		setLayout(new BorderLayout());
@@ -162,12 +166,42 @@ public class EditorWindow extends JFrame {
 		this.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
+				// Prompt user if there are unsaved changes
+				if (!mViewModel.getIsMemoTextSynced().get()) {
+					// Show dialog
+					int dialogResult = JOptionPane.showOptionDialog(
+							EditorWindow.this,
+							"Do you want to save changes to " + mViewModel.getMemo().get().getFileName() + "?",
+							"Memos",
+							JOptionPane.YES_NO_CANCEL_OPTION,
+							JOptionPane.PLAIN_MESSAGE,
+							null,
+							new Object[] {"Save", "Don't save", "Cancel"},
+							"Save");
+					
+					// Handle dialog result
+					if (dialogResult == JOptionPane.YES_OPTION) {
+						// Save changes
+						int saveResult = save();
+						// Don't exit app if user cancelled the "Save as..." operation
+						if (saveResult == JFileChooser.CANCEL_OPTION) {
+							return; // stop short, don't exit app
+						}
+					} else if (dialogResult == JOptionPane.CANCEL_OPTION) {
+						return; // stop short, don't exit app
+					}
+				}
+				
 				// Give SettingsViewModel current window info
 				mSettingsVM.onWindowClosing(
 						EditorWindow.this.getX(),
 						EditorWindow.this.getY(),
 						EditorWindow.this.getWidth(),
 						EditorWindow.this.getHeight());
+				
+				// Close the application manually
+				EditorWindow.this.dispose();
+				System.exit(0);
 			}
 		});
 		
@@ -178,6 +212,11 @@ public class EditorWindow extends JFrame {
 		Container c = getContentPane();
 		c.add(scrollPane, BorderLayout.CENTER);
 	}
+	
+	
+	// Events
+	
+	
 	
 	
 	// Private methods
@@ -297,14 +336,14 @@ public class EditorWindow extends JFrame {
 		return menuBar;
 	}
 	
-	private void save() {
+	private int save() {
 		System.out.println("Save MenuItem selected: " + mTextArea.getText());
-		mViewModel.saveChanges(mTextArea.getText());
+		return mViewModel.saveChanges(mTextArea.getText());
 	}
 	
-	private void saveAs() {
+	private int saveAs() {
 		System.out.println("Save As... MenuItem selected");
-		mViewModel.saveChangesAs(mTextArea.getText());
+		return mViewModel.saveChangesAs(mTextArea.getText());
 	}
 	
 	/** Closes this window via WindowEvent, as if the user clicked the "X" */
