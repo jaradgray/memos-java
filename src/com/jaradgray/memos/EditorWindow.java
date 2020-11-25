@@ -8,13 +8,16 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
+import javax.swing.ButtonGroup;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.KeyStroke;
@@ -59,97 +62,6 @@ public class EditorWindow extends JFrame {
 			}
 			
 		});
-		
-		// menu bar
-		JMenuBar menuBar;
-		JMenu fileMenu, editMenu, formatMenu, themeMenu;
-		JMenuItem menuItem; // just need one JMenuItem according to the docs
-		
-		menuBar = new JMenuBar();
-		
-		// build the "File" menu
-		fileMenu = new JMenu("File");
-		fileMenu.setMnemonic(KeyEvent.VK_F);
-		menuBar.add(fileMenu);
-		
-		menuItem = new JMenuItem("Save");
-		menuItem.setMnemonic(KeyEvent.VK_S);
-		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
-		menuItem.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				save();
-			}
-			
-		});
-		fileMenu.add(menuItem);
-		
-		menuItem = new JMenuItem("Save As...");
-		menuItem.setMnemonic(KeyEvent.VK_A);
-		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK | ActionEvent.SHIFT_MASK));
-		menuItem.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				saveAs();
-			}
-			
-		});
-		fileMenu.add(menuItem);
-		
-		fileMenu.addSeparator();
-		
-		menuItem = new JMenuItem("Exit");
-		menuItem.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				exit();
-			}
-			
-		});
-		fileMenu.add(menuItem);
-		
-		// build the "Format" menu
-		formatMenu = new JMenu("Format");
-		formatMenu.setMnemonic(KeyEvent.VK_O);
-		menuBar.add(formatMenu);
-		
-		menuItem = new JMenuItem("Font...");
-		menuItem.setMnemonic(KeyEvent.VK_F);
-		menuItem.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				selectFont();
-			}
-		});
-		formatMenu.add(menuItem);
-		
-		// build the "Format -> Theme" menu
-		themeMenu = new JMenu("Theme");
-		themeMenu.setMnemonic(KeyEvent.VK_T);
-		formatMenu.add(themeMenu);
-		
-		menuItem = new JMenuItem("Select Colors...");
-		menuItem.setMnemonic(KeyEvent.VK_S);
-		menuItem.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				selectThemeColors();
-			}
-		});
-		themeMenu.add(menuItem);
-		
-		menuItem = new JMenuItem("Save Current Theme...");
-		menuItem.setMnemonic(KeyEvent.VK_A);
-		menuItem.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				saveCurrentTheme();
-			}
-		});
-		themeMenu.add(menuItem);
-		
-		// set JFrame's JMenuBar
-		setJMenuBar(menuBar);
 		
 		// Get a ViewModel
 		mViewModel = new EditorWindowViewModel(this);
@@ -217,7 +129,9 @@ public class EditorWindow extends JFrame {
 				mTextArea.setForeground(ts.getFgColorTransient());
 				mTextArea.setBackground(ts.getBgColorTransient());
 				
-				// TODO Update Format -> Theme menu based on all themes
+				// Note: we don't need to rebuild the menu here to indicate
+				//	the current Theme, because the JRadioButtonMenuItem
+				//	mechanism indicates the last-clicked item internally
 			}
 		});
 		
@@ -231,6 +145,9 @@ public class EditorWindow extends JFrame {
 		// font
 		FontSettings fontSettings = mSettingsVM.getFontSettings().get();
 		mTextArea.setFont(fontSettings.getFont());
+		// theme transient colors
+		mTextArea.setForeground(mSettingsVM.getThemeSettings().get().getFgColorTransient());
+		mTextArea.setBackground(mSettingsVM.getThemeSettings().get().getBgColorTransient());
 		
 		// Listen for window events
 		this.addWindowListener(new WindowAdapter() {
@@ -245,6 +162,9 @@ public class EditorWindow extends JFrame {
 			}
 		});
 		
+		// Set JFrame's MenuBar
+		setJMenuBar(buildMenuBar());
+		
 		// Add Swing components to JFrame's content pane
 		Container c = getContentPane();
 		c.add(scrollPane, BorderLayout.CENTER);
@@ -252,6 +172,121 @@ public class EditorWindow extends JFrame {
 	
 	
 	// Private methods
+	
+	private JMenuBar buildMenuBar() {
+		JMenuBar menuBar;
+		JMenu fileMenu, editMenu, formatMenu, themeMenu;
+		JMenuItem menuItem; // just need one JMenuItem according to the docs
+		JRadioButtonMenuItem rbMenuItem;
+		
+		menuBar = new JMenuBar();
+		
+		// Build the "File" menu
+		fileMenu = new JMenu("File");
+		fileMenu.setMnemonic(KeyEvent.VK_F);
+		menuBar.add(fileMenu);
+		
+		menuItem = new JMenuItem("Save");
+		menuItem.setMnemonic(KeyEvent.VK_S);
+		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
+		menuItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				save();
+			}
+			
+		});
+		fileMenu.add(menuItem);
+		
+		menuItem = new JMenuItem("Save As...");
+		menuItem.setMnemonic(KeyEvent.VK_A);
+		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK | ActionEvent.SHIFT_MASK));
+		menuItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				saveAs();
+			}
+			
+		});
+		fileMenu.add(menuItem);
+		
+		fileMenu.addSeparator();
+		
+		menuItem = new JMenuItem("Exit");
+		menuItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				exit();
+			}
+			
+		});
+		fileMenu.add(menuItem);
+		
+		// Build the "Format" menu
+		formatMenu = new JMenu("Format");
+		formatMenu.setMnemonic(KeyEvent.VK_O);
+		menuBar.add(formatMenu);
+		
+		menuItem = new JMenuItem("Font...");
+		menuItem.setMnemonic(KeyEvent.VK_F);
+		menuItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				selectFont();
+			}
+		});
+		formatMenu.add(menuItem);
+		
+		// Build the "Format -> Theme" menu
+		themeMenu = new JMenu("Theme");
+		themeMenu.setMnemonic(KeyEvent.VK_T);
+		formatMenu.add(themeMenu);
+		
+		// list all bundled or saved themes as radio button items
+		String curThemeName = mSettingsVM.getThemeSettings().get().getTheme().getName();
+		List<Theme> allThemes = mSettingsVM.getAllThemes().get();
+		ButtonGroup group = new ButtonGroup();
+		for (Theme t : allThemes) {
+			rbMenuItem = new JRadioButtonMenuItem(t.getName());
+			// indicate current Theme
+			if (t.getName().equals(curThemeName)) {
+				rbMenuItem.setSelected(true);
+			}
+			// listen for clicks
+			rbMenuItem.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent arg0) {
+					mSettingsVM.onThemeSelected(t);
+				}
+			});
+			group.add(rbMenuItem);
+			themeMenu.add(rbMenuItem);
+		}
+		
+		themeMenu.addSeparator();
+		menuItem = new JMenuItem("Select Colors...");
+		menuItem.setMnemonic(KeyEvent.VK_S);
+		menuItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				selectThemeColors();
+			}
+		});
+		themeMenu.add(menuItem);
+		
+		menuItem = new JMenuItem("Save Current Theme...");
+		menuItem.setMnemonic(KeyEvent.VK_A);
+		menuItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				saveCurrentTheme();
+			}
+		});
+		themeMenu.add(menuItem);
+		
+		// Return menuBar
+		return menuBar;
+	}
 	
 	private void save() {
 		System.out.println("Save MenuItem selected: " + mTextArea.getText());
