@@ -134,6 +134,15 @@ public class EditorWindow extends JFrame {
 				//	mechanism indicates the last-clicked item internally
 			}
 		});
+		// the list of all Themes
+		mSettingsVM.getAllThemes().addObserver(new Observer() {
+			@Override
+			public void update(Observable o, Object arg) {
+				// Rebuild and revalidate this window's JMenuBar
+				setJMenuBar(buildMenuBar());
+				getJMenuBar().revalidate(); // revalidate for dynamic changes
+			}
+		});
 		
 		// Initialize component state from VM
 		EditorWindow.this.setTitle(mViewModel.getMemo().get().getFileName() + " - Memos");
